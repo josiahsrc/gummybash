@@ -5,6 +5,7 @@ interface User {
   joystickX: number;
   joystickY: number;
   buttonPresses: number;
+  color: string;
 }
 
 interface GameState {

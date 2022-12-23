@@ -1,3 +1,7 @@
+// ignore_for_file: invalid_annotation_target
+
+import 'package:controller/utility/json.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'model.freezed.dart';
@@ -12,6 +16,11 @@ class User with _$User {
     required double joystickX,
     required double joystickY,
     required int buttonPresses,
+    @JsonKey(
+      fromJson: hexToColor,
+      toJson: colorToHex,
+    )
+    required Color color,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -21,11 +30,19 @@ class User with _$User {
 class GameState with _$GameState {
   const factory GameState({
     required List<User> users,
-    // required DateTime updatedAt,
-    // required DateTime? startTimestamp,
-    // required DateTime? endTimestamp,
+    required DateTime updatedAt,
+    @JsonKey(
+      fromJson: maybeDateTimeFromJson,
+      toJson: maybeDateTimeToJson,
+    )
+    required DateTime? startTimestamp,
+    @JsonKey(
+      fromJson: maybeDateTimeFromJson,
+      toJson: maybeDateTimeToJson,
+    )
+    required DateTime? endTimestamp,
     required DateTime lobbyTimestamp,
-    // required String? lastWinnerId,
+    required String? lastWinnerId,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>

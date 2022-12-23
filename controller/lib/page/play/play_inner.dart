@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_joystick/flutter_joystick.dart';
 
 class PlayInner extends StatelessWidget {
   const PlayInner({
@@ -7,17 +8,16 @@ class PlayInner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: const Text('Play'),
-        ),
-      ],
-    );
-
     return Scaffold(
       body: SafeArea(
-        child: content,
+        child: Row(
+          children: [
+            // Joystick(
+            //   listener: (details) {},
+            //   period: const Duration(milliseconds: 5),
+            // ),
+          ],
+        ),
       ),
     );
   }

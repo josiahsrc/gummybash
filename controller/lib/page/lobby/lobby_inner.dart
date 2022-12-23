@@ -27,6 +27,7 @@ class LobbyInner extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Chip(
                     label: Text(user.displayName),
+                    backgroundColor: user.color,
                   ),
                 ),
             ],

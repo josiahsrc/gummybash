@@ -1,5 +1,6 @@
 import { server as WSServer } from "websocket";
 import * as http from "http";
+import { userHexColors } from "./color";
 
 function cloneGameState(state: GameState): GameState {
   return {
@@ -10,6 +11,7 @@ function cloneGameState(state: GameState): GameState {
       joystickX: user.joystickX,
       joystickY: user.joystickY,
       buttonPresses: user.buttonPresses,
+      color: user.color,
     })),
     updatedAt: state.updatedAt,
     startTimestamp: state.startTimestamp,
@@ -30,6 +32,7 @@ const wss = new WSServer({
   httpServer: server,
 });
 
+let userIndex = 0;
 const state: GameState = {
   users: [],
   updatedAt: new Date().toISOString(),
@@ -66,6 +69,7 @@ wss.on('request', function (request) {
     if (type === 'joinGame') {
       const req = msg as JoinGameRequest;
       const user: User = {
+        color: userHexColors[userIndex % userHexColors.length],
         id: req.userId,
         displayName: req.displayName,
         updatedAt: new Date().toISOString(),
@@ -73,6 +77,8 @@ wss.on('request', function (request) {
         joystickY: 0,
         buttonPresses: 0,
       };
+
+      userIndex++;
 
       state.users.push(user);
       state.updatedAt = new Date().toISOString();

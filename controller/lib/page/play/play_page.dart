@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/play_cubit.dart';
 import 'play_inner.dart';
 
 class PlayPage extends StatelessWidget {
@@ -9,6 +11,9 @@ class PlayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlayInner();
+    return BlocProvider(
+      create: (context) => PlayCubit(),
+      child: PlayInner(),
+    );
   }
 }
