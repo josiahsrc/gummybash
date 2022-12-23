@@ -18,7 +18,7 @@ class LobbyCubit extends Cubit<LobbyState> {
   StreamSubscription? _coreCubitSubscription;
 
   void init() {
-    coreCubit.streamWithFirst.listen((state) {
+    _coreCubitSubscription = coreCubit.streamWithFirst.listen((state) {
       if (state is! ReadyState) {
         return;
       }

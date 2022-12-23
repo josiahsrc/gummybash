@@ -1,5 +1,5 @@
+import 'package:controller/widget/joystick.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_joystick/flutter_joystick.dart';
 
 class PlayInner extends StatelessWidget {
   const PlayInner({
@@ -12,10 +12,9 @@ class PlayInner extends StatelessWidget {
       body: SafeArea(
         child: Row(
           children: [
-            // Joystick(
-            //   listener: (details) {},
-            //   period: const Duration(milliseconds: 5),
-            // ),
+            Expanded(
+              child: Joystick(),
+            ),
           ],
         ),
       ),
