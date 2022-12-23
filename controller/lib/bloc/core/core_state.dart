@@ -18,4 +18,6 @@ class CoreState with _$CoreState {
 extension ReadyStateX on ReadyState {
   User? get user =>
       gameState.users.where((element) => element.id == userId).first;
+
+  bool get isInLobby => DateTime.now().isAfter(gameState.lobbyTimestamp);
 }

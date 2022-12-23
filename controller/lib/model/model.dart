@@ -24,7 +24,7 @@ class GameState with _$GameState {
     // required DateTime updatedAt,
     // required DateTime? startTimestamp,
     // required DateTime? endTimestamp,
-    // required DateTime lobbyTimestamp,
+    required DateTime lobbyTimestamp,
     // required String? lastWinnerId,
   }) = _GameState;
 
