@@ -4,7 +4,7 @@ import 'package:controller/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({
     super.key,
     required this.serverRepo,
@@ -15,9 +15,35 @@ class App extends StatelessWidget {
   final CoreCubit coreCubit;
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  late final AppRouter appRouter;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      syncRouterState(widget.coreCubit.state);
+    });
+
+    appRouter = AppRouter(
+      coreStateGuard: CoreStateGuard(coreCubit: widget.coreCubit),
+    );
+
+    super.initState();
+  }
+
+  void syncRouterState(CoreState state) {
+    final route = getRouteForCoreState(state);
+    appRouter.replaceAll([route]);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final materialApp = MaterialApp.router(
-      routerConfig: router,
+      routerDelegate: appRouter.delegate(),
+      routeInformationParser: appRouter.defaultRouteParser(),
       supportedLocales: [
         Locale('en'),
       ],
@@ -32,10 +58,7 @@ class App extends StatelessWidget {
               final curr = getRouteForCoreState(current);
               return prev != curr;
             },
-            listener: (context, state) {
-              final route = getRouteForCoreState(state);
-              router.pushReplacementNamed(route);
-            },
+            listener: (context, state) => syncRouterState(state),
           ),
         ],
         child: materialApp,
@@ -44,11 +67,11 @@ class App extends StatelessWidget {
 
     final providers = MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: serverRepo),
+        RepositoryProvider.value(value: widget.serverRepo),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: coreCubit),
+          BlocProvider.value(value: widget.coreCubit),
         ],
         child: listeners,
       ),
