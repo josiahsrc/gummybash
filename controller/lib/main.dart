@@ -1,4 +1,4 @@
-import 'package:controller/bloc/core/core_bloc.dart';
+import 'package:controller/bloc/core/core_cubit.dart';
 import 'package:controller/repo/server_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -6,13 +6,15 @@ import 'package:logger/logger.dart';
 import 'app.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Logger.level = Level.verbose;
 
   final serverRepo = ServerRepo();
-  final coreBloc = CoreBloc();
+  final coreBloc = CoreCubit()..init();
 
-  runApp(App(
+  return runApp(App(
     serverRepo: serverRepo,
-    coreBloc: coreBloc,
+    coreCubit: coreBloc,
   ));
 }

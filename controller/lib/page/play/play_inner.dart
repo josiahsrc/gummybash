@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class {{name.pascalCase()}}Inner extends StatelessWidget {
-  const {{name.pascalCase()}}Inner({
+class PlayInner extends StatelessWidget {
+  const PlayInner({
     super.key,
   });
 
@@ -10,7 +10,7 @@ class {{name.pascalCase()}}Inner extends StatelessWidget {
     final content = CustomScrollView(
       slivers: [
         SliverAppBar(
-          title: const Text('{{name.titleCase()}}'),
+          title: const Text('Play'),
         ),
       ],
     );

@@ -9,10 +9,6 @@ class {{name.pascalCase()}}Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: {{name.pascalCase()}}Inner(),
-      ),
-    );
+    return {{name.pascalCase()}}Inner();
   }
 }

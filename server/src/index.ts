@@ -1,67 +1,161 @@
-// import * as WebSocket from 'ws';
-// use websocket library from npm instead of ws
 import { server as WSServer } from "websocket";
 import * as http from "http";
 
-const port = 8080;
+function cloneGameState(state: GameState): GameState {
+  return {
+    users: state.users.map(user => ({
+      id: user.id,
+      displayName: user.displayName,
+      updatedAt: user.updatedAt,
+      joystickX: user.joystickX,
+      joystickY: user.joystickY,
+      buttonPresses: user.buttonPresses,
+    })),
+    updatedAt: state.updatedAt,
+    startTimestamp: state.startTimestamp,
+    endTimestamp: state.endTimestamp,
+    lobbyTimestamp: state.lobbyTimestamp,
+    winnerId: state.winnerId,
+  };
+}
+
+const PORT = 8080;
+const KICK_LATENCY = 1000 * 5;
+const GAME_DURATION = 1000 * 60 * 2;
+const CREDITS_DURATION = 1000 * 8;
 
 const server = http.createServer();
-server.listen(port);
-
+server.listen(PORT);
 const wss = new WSServer({
   httpServer: server,
 });
-  
-// create server
 
-  
-
-// wss.on('connection', (ws: WebSocket) => {
-//   ws.on('message', (message: string) => {
-//     // process incoming message and store values
-//     wss.clients.forEach((client) => {
-//       if (client !== ws && client.readyState === WebSocket.OPEN) {
-//         // send message to all connected controllers and the game
-//         client.send(message);
-//       }
-//     });
-//   });
-// });
-
-// I'm maintaining all active connections in this object
-const clients: any = {};
-
-// This code generates unique userid for everyuser.
-const getUniqueID = () => {
-  const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-  return s4() + s4() + '-' + s4();
+const state: GameState = {
+  users: [],
+  updatedAt: new Date().toISOString(),
+  lobbyTimestamp: new Date().toISOString(),
 };
+let lastState = cloneGameState(state);
 
-wss.on('request', function(request) {
-  var userID = getUniqueID();
-  console.log((new Date()) + ' Recieved a new connection from origin ' + request.origin + '.');
-  // You can rewrite this part of the code to accept only the requests from allowed origin
+// Handle requests
+wss.on('request', function (request) {
   const connection = request.accept(null, request.origin);
-  clients[userID] = connection;
-  console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients))
+  console.log('Connection accepted');
 
-  connection.on('message', function(message) {
-    if (message.type === 'utf8') {
-      console.log('Received Message: ' + message.utf8Data);
-      const messageJson = JSON.parse(message.utf8Data);
-      const now = new Date().getTime();
-      const timeDiff = now - messageJson.timestamp;
-      console.log('latency: ', timeDiff, 'ms');
-      // // process incoming message and store values
-      // for (var key in clients) {
-      //   clients[key].sendUTF(message.utf8Data);
-      //   console.log('sent Message to: ', clients[key])
-      // }
+  connection.on('message', function (raw) {
+    if (raw.type !== 'utf8') {
+      console.error('Received non-utf8 message');
+      return;
+    }
+
+    let msg: any;
+    try {
+      msg = JSON.parse(raw.utf8Data);
+    } catch (e) {
+      console.error('Received invalid JSON', raw.utf8Data);
+      return;
+    }
+
+    const type = msg.runtimeType;
+    console.log('Received message', msg);
+    if (!type) {
+      console.error('Received message without runtimeType');
+      return;
+    }
+
+    if (type === 'joinGame') {
+      const req = msg as JoinGameRequest;
+      const user: User = {
+        id: req.userId,
+        displayName: req.displayName,
+        updatedAt: new Date().toISOString(),
+        joystickX: 0,
+        joystickY: 0,
+        buttonPresses: 0,
+      };
+
+      state.users.push(user);
+      state.updatedAt = new Date().toISOString();
+      console.log('User joined: ', user);
+    } else if (type === 'updateUser') {
+      const req = msg as UpdateUserRequest;
+      const user = state.users.find(user => user.id === req.userId);
+      if (!user) {
+        console.error('Received update for unknown user');
+        return;
+      }
+
+      user.joystickX = req.joystickX;
+      user.joystickY = req.joystickY;
+      if (req.buttonPressed) {
+        user.buttonPresses++;
+      }
+      user.updatedAt = new Date().toISOString();
+      state.updatedAt = new Date().toISOString();
+    } else if (type === 'updateGameState') {
+      const req = msg as UpdateGameStateRequest;
+      if (req.start) {
+        const time = new Date().getTime();
+        state.startTimestamp = new Date(time).toISOString();
+        state.endTimestamp = new Date(time + GAME_DURATION).toISOString();
+        state.lobbyTimestamp = new Date(time + GAME_DURATION + CREDITS_DURATION).toISOString();
+        state.winnerId = undefined;
+      } else if (req.lobby) {
+        state.startTimestamp = undefined;
+        state.endTimestamp = undefined;
+        state.lobbyTimestamp = new Date().toISOString();
+        state.winnerId = undefined;
+      } else if (req.winnerId) {
+        if (!state.startTimestamp) {
+          console.error('Received winner before game started');
+          return;
+        }
+        const time = new Date().getTime();
+        state.winnerId = req.winnerId;
+        state.endTimestamp = new Date(time).toISOString();
+        state.lobbyTimestamp = new Date(time + CREDITS_DURATION).toISOString();
+      }
+    } else {
+      console.error('Received unknown message type', type);
     }
   });
 });
 
-console.log(`Server started on port ${port}`);
+// Sync game state
+setInterval(() => {
+  const now = new Date().getTime();
 
-// https://github.com/AvanthikaMeenakshi/node-websockets/blob/master/server/index.js
-// https://blog.logrocket.com/websockets-tutorial-how-to-go-real-time-with-node-and-react-8e4693fbf843/
+  // // Kick inactive users
+  // state.users = state.users.filter(user => {
+  //   const timeDiff = now - new Date(user.updatedAt).getTime();
+  //   return timeDiff < KICK_LATENCY;
+  // });
+  // state.updatedAt = new Date().toISOString();
+
+  // End game if time is up
+  const lobbyTimeDiff = now - new Date(state.lobbyTimestamp).getTime();
+  if (lobbyTimeDiff > 0) {
+    state.startTimestamp = undefined;
+    state.endTimestamp = undefined;
+    state.winnerId = undefined;
+  }
+
+  // Send game state to all clients
+  wss.broadcast(JSON.stringify(<GameStateResponse>{
+    runtimeType: 'gameState',
+    gameState: state,
+  }));
+
+  // check if state changed (except for updatedAt)
+  const curr = cloneGameState(state);
+  const last = cloneGameState(lastState);
+  curr.updatedAt = last.updatedAt;
+  if (JSON.stringify(curr) !== JSON.stringify(last)) {
+    console.log('state changed', state);
+  }
+
+  // update last state
+  lastState = cloneGameState(state);
+}, 5);
+
+console.log(`Server started on port ${PORT}`);
