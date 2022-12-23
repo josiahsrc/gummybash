@@ -1,0 +1,7 @@
+bricks:
+  cubit:
+    path: templates/cubit
+  bloc:
+    path: templates/bloc
+  page:
+    path: templates/page
