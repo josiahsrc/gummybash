@@ -11,8 +11,7 @@ import 'package:uuid/uuid.dart';
 part 'core_state.dart';
 part 'core_cubit.freezed.dart';
 
-const port = '8080';
-const host = 'localhost';
+const url = 'ws://10.0.0.12:8080';
 
 class CoreCubit extends Cubit<CoreState> {
   CoreCubit() : super(CoreState.setup());
@@ -41,7 +40,7 @@ class CoreCubit extends Cubit<CoreState> {
 
   void init() {
     _channel?.sink.close(status.goingAway);
-    _channel = WebSocketChannel.connect(Uri.parse('ws://$host:$port'));
+    _channel = WebSocketChannel.connect(Uri.parse(url));
     _channel!.stream.listen(_handleMessage);
   }
 
