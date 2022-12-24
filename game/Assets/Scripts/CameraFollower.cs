@@ -11,6 +11,7 @@ public class CameraFollower : Singleton<CameraFollower>
 	public float deltaMult = 0.2f;
 	public float smoothing = 0.2f;
   public float angle = 30f;
+  public float angleSmoothing = 15f;
 
 	private Vector3 _vel = Vector3.zero;
 
@@ -40,10 +41,13 @@ public class CameraFollower : Singleton<CameraFollower>
     top.y = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
     top.z = -Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
 
-		transform.position = Vector3.SmoothDamp(transform.position, top, ref _vel, smoothing);
+		var pos = Vector3.SmoothDamp(transform.position, top, ref _vel, smoothing);
+		transform.position = pos;
 
-    var lookAt = new Vector3(target.x, 0, target.z);
-		transform.LookAt(lookAt, Vector3.forward);
+    target.y = 0;
+    var lookAt = target - pos;
+    var rot = Quaternion.LookRotation(lookAt, Vector3.up);
+    transform.rotation = Quaternion.Lerp(transform.rotation, rot, angleSmoothing * Time.deltaTime);
 	}
 
 	private void LateUpdate()

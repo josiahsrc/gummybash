@@ -50,9 +50,9 @@ public class CharacterMover : MonoBehaviour
 		return joystick;
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
-    _movemventSmoothing = Mathf.Lerp(_movemventSmoothing, movementSmoothing, Time.deltaTime * movementRecovery);
+    _movemventSmoothing = Mathf.Lerp(_movemventSmoothing, movementSmoothing, Time.fixedDeltaTime * movementRecovery);
 
 		var joystick = enableComputerMovement ? ComputerMovement() : GetMovementFromPlayer();
 		joystick = joystick.normalized;
@@ -63,7 +63,7 @@ public class CharacterMover : MonoBehaviour
 		movement = Vector3.SmoothDamp(rb.velocity, movement, ref _vel, _movemventSmoothing);
 
 		var targetRotation = Quaternion.LookRotation(_lastDir, Vector3.up);
-		var rotation = Quaternion.Slerp(transform.rotation, targetRotation, angularSmoothing * Time.deltaTime);
+		var rotation = Quaternion.Slerp(transform.rotation, targetRotation, angularSmoothing * Time.fixedDeltaTime);
 		transform.rotation = rotation;
 
 		rb.velocity = movement;
