@@ -65,11 +65,11 @@ public class Server : Singleton<Server>
 		websocket.SendText(json);
 	}
 
-	public void SendWinnerRequest(string userId)
+	public void SendWinnerRequest(UserType winner)
 	{
 		SendUpdateGameStateRequest(new UpdateGameStateRequest()
 		{
-			winnerId = userId,
+			winner = ModelUtils.userTypeToString(winner),
 		});
 	}
 

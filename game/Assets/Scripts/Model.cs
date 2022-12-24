@@ -2,6 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class ModelUtils
+{
+	public static UserType userTypeFromString(string value)
+	{
+		if (value == "gummyBear") {
+			return UserType.gummyBear;
+		} else if (value == "gingerBreadHouse") {
+			return UserType.gingerBreadHouse;
+		} else {
+			return UserType.none;
+		}
+	}
+
+  public static string userTypeToString(UserType value)
+  {
+    if (value == UserType.gummyBear) {
+      return "gummyBear";
+    } else if (value == UserType.gingerBreadHouse) {
+      return "gingerBreadHouse";
+    } else {
+      return "none";
+    }
+  }
+}
+
+public enum UserType {
+  none,
+  gummyBear,
+  gingerBreadHouse,
+}
+
 [System.Serializable]
 public class User
 {
@@ -12,6 +43,7 @@ public class User
 	public float joystickY;
 	public int buttonPresses;
 	public string color;
+  public string type;
 }
 
 [System.Serializable]
@@ -22,7 +54,7 @@ public class GameState
 	public string startTimestamp;
 	public string endTimestamp;
 	public string lobbyTimestamp;
-	public string winnerId;
+	public string winner;
 }
 
 [System.Serializable]
@@ -38,16 +70,16 @@ public class UpdateUserRequest
 {
 	public string runtimeType = "updateUser";
 	public string userId;
-	public float? joystickX;
-	public float? joystickY;
-	public bool? buttonPressed;
+	public float joystickX;
+	public float joystickY;
+	public bool buttonPressed;
 }
 
 [System.Serializable]
 public class UpdateGameStateRequest
 {
 	public string runtimeType = "updateGameState";
-	public string winnerId;
+  public string winner;
 	public bool start;
 	public bool lobby;
 }

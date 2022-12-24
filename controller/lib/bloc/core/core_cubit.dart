@@ -50,6 +50,14 @@ class CoreCubit extends Cubit<CoreState> {
         if (!_isReady()) {
           return;
         }
+
+        final state = this.state as ReadyState;
+        if (state.gameState.users.where((e) => e.id == _userId).isEmpty) {
+          _userId = null;
+          emit(CoreState.setup());
+          return;
+        }
+
         _addMessage(Requests.updateUser(userId: _userId!));
       },
     );
@@ -69,7 +77,7 @@ class CoreCubit extends Cubit<CoreState> {
       Requests.updateGameState(
         start: true,
         lobby: false,
-        winnerId: null,
+        winner: null,
       ),
     );
   }
@@ -83,7 +91,7 @@ class CoreCubit extends Cubit<CoreState> {
       Requests.updateGameState(
         start: false,
         lobby: true,
-        winnerId: null,
+        winner: null,
       ),
     );
   }

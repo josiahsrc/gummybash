@@ -7,6 +7,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'model.freezed.dart';
 part 'model.g.dart';
 
+enum UserType {
+  none,
+  gummyBear,
+  gingerBreadHouse,
+}
+
 @freezed
 class User with _$User {
   const factory User({
@@ -21,6 +27,8 @@ class User with _$User {
       toJson: colorToHex,
     )
         required Color color,
+    @Default(UserType.none)
+        UserType type,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -42,7 +50,8 @@ class GameState with _$GameState {
     )
         required DateTime? endTimestamp,
     required DateTime lobbyTimestamp,
-    required String? lastWinnerId,
+    @Default(UserType.none)
+        UserType winner,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
@@ -64,7 +73,7 @@ class Requests with _$Requests {
   }) = UpdateUserRequest;
 
   const factory Requests.updateGameState({
-    required String? winnerId,
+    required UserType? winner,
     required bool? start,
     required bool? lobby,
   }) = UpdateGameStateRequest;

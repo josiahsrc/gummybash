@@ -1,6 +1,7 @@
 import { server as WSServer } from "websocket";
 import * as http from "http";
 import { userHexColors } from "./color";
+import { GameState, GameStateResponse, JoinGameRequest, UpdateGameStateRequest, UpdateUserRequest, User, UserType } from "./model";
 
 function cloneGameState(state: GameState): GameState {
   return {
@@ -12,12 +13,13 @@ function cloneGameState(state: GameState): GameState {
       joystickY: user.joystickY,
       buttonPresses: user.buttonPresses,
       color: user.color,
+      type: user.type,
     })),
     updatedAt: state.updatedAt,
     startTimestamp: state.startTimestamp,
     endTimestamp: state.endTimestamp,
     lobbyTimestamp: state.lobbyTimestamp,
-    winnerId: state.winnerId,
+    winner: state.winner,
   };
 }
 
@@ -38,8 +40,15 @@ const state: GameState = {
   users: [],
   updatedAt: new Date().toISOString(),
   lobbyTimestamp: new Date().toISOString(),
+  winner: UserType.none,
 };
 let lastState = cloneGameState(state);
+
+function clearUserTypes() {
+  state.users.forEach(user => {
+    user.type = UserType.none;
+  });
+}
 
 // Handle requests
 wss.on('request', function (request) {
@@ -77,6 +86,7 @@ wss.on('request', function (request) {
         joystickX: 0,
         joystickY: 0,
         buttonPresses: 0,
+        type: UserType.none,
       };
 
       userIndex++;
@@ -104,26 +114,38 @@ wss.on('request', function (request) {
 
       user.updatedAt = new Date().toISOString();
       state.updatedAt = new Date().toISOString();
-    } else if (type === 'updateGameState') { 
+    } else if (type === 'updateGameState') {
       const req = msg as UpdateGameStateRequest;
       if (req.start) {
         const time = new Date().getTime();
         state.startTimestamp = new Date(time).toISOString();
         state.endTimestamp = new Date(time + GAME_DURATION).toISOString();
         state.lobbyTimestamp = new Date(time + GAME_DURATION + CREDITS_DURATION).toISOString();
-        state.winnerId = undefined;
+        state.winner = UserType.none;
+
+        // Assign user types
+        const userIds = state.users.map(user => user.id);
+        const randomIndex = Math.floor(Math.random() * userIds.length);
+        const randomUserId = userIds[randomIndex];
+        state.users.forEach(user => {
+          if (user.id === randomUserId) {
+            user.type = UserType.gingerBreadHouse;
+          } else {
+            user.type = UserType.gummyBear;
+          }
+        });
       } else if (req.lobby) {
         state.startTimestamp = undefined;
         state.endTimestamp = undefined;
         state.lobbyTimestamp = new Date().toISOString();
-        state.winnerId = undefined;
-      } else if (req.winnerId) {
+        state.winner = UserType.none;
+      } else if (req.winner) {
         if (!state.startTimestamp) {
           console.error('Received winner before game started');
           return;
         }
         const time = new Date().getTime();
-        state.winnerId = req.winnerId;
+        state.winner = req.winner;
         state.endTimestamp = new Date(time).toISOString();
         state.lobbyTimestamp = new Date(time + CREDITS_DURATION).toISOString();
       }
@@ -149,7 +171,8 @@ setInterval(() => {
   if (lobbyTimeDiff > 0) {
     state.startTimestamp = undefined;
     state.endTimestamp = undefined;
-    state.winnerId = undefined;
+    state.winner = UserType.none;
+    clearUserTypes();
   }
 
   // Send game state to all clients

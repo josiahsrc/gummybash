@@ -1,4 +1,10 @@
-interface User {
+export enum UserType {
+  none = 'none',
+  gummyBear = 'gummyBear',
+  gingerBreadHouse = 'gingerBreadHouse',
+}
+
+export interface User {
   id: string;
   displayName: string;
   updatedAt: string;
@@ -6,24 +12,25 @@ interface User {
   joystickY: number;
   buttonPresses: number;
   color: string;
+  type: UserType;
 }
 
-interface GameState {
+export interface GameState {
   users: User[];
   updatedAt: string;
   startTimestamp?: string;
   endTimestamp?: string;
   lobbyTimestamp: string;
-  winnerId?: string;
+  winner: UserType;
 }
 
-interface JoinGameRequest {
+export interface JoinGameRequest {
   runtimeType: 'joinGame';
   displayName: string;
   userId: string;
 }
 
-interface UpdateUserRequest {
+export interface UpdateUserRequest {
   runtimeType: 'updateUser';
   userId: string;
   joystickX?: number;
@@ -31,19 +38,19 @@ interface UpdateUserRequest {
   buttonPressed?: boolean;
 }
 
-interface UpdateGameStateRequest {
+export interface UpdateGameStateRequest {
   runtimeType: 'updateGameState';
-  winnerId?: string;
+  winner?: UserType;
   start?: boolean;
   lobby?: boolean;
 }
 
-interface GameStateResponse {
+export interface GameStateResponse {
   runtimeType: 'gameState';
   gameState: GameState;
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
   runtimeType: 'error';
   message: string;
 }
