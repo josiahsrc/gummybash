@@ -38,9 +38,9 @@ public class UpdateUserRequest
 {
 	public string runtimeType = "updateUser";
 	public string userId;
-	public float joystickX;
-	public float joystickY;
-	public bool buttonPressed;
+	public float? joystickX;
+	public float? joystickY;
+	public bool? buttonPressed;
 }
 
 [System.Serializable]

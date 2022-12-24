@@ -92,14 +92,19 @@ wss.on('request', function (request) {
         return;
       }
 
-      user.joystickX = req.joystickX;
-      user.joystickY = req.joystickY;
+      if (req.joystickX !== undefined && req.joystickX !== null) {
+        user.joystickX = req.joystickX;
+      }
+      if (req.joystickY !== undefined && req.joystickY !== null) {
+        user.joystickY = req.joystickY;
+      }
       if (req.buttonPressed) {
         user.buttonPresses++;
       }
+
       user.updatedAt = new Date().toISOString();
       state.updatedAt = new Date().toISOString();
-    } else if (type === 'updateGameState') {
+    } else if (type === 'updateGameState') { 
       const req = msg as UpdateGameStateRequest;
       if (req.start) {
         const time = new Date().getTime();
@@ -132,12 +137,12 @@ wss.on('request', function (request) {
 setInterval(() => {
   const now = new Date().getTime();
 
-  // // Kick inactive users
-  // state.users = state.users.filter(user => {
-  //   const timeDiff = now - new Date(user.updatedAt).getTime();
-  //   return timeDiff < KICK_LATENCY;
-  // });
-  // state.updatedAt = new Date().toISOString();
+  // Kick inactive users
+  state.users = state.users.filter(user => {
+    const timeDiff = now - new Date(user.updatedAt).getTime();
+    return timeDiff < KICK_LATENCY;
+  });
+  state.updatedAt = new Date().toISOString();
 
   // End game if time is up
   const lobbyTimeDiff = now - new Date(state.lobbyTimestamp).getTime();

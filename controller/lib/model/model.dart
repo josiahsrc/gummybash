@@ -20,7 +20,7 @@ class User with _$User {
       fromJson: hexToColor,
       toJson: colorToHex,
     )
-    required Color color,
+        required Color color,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -35,12 +35,12 @@ class GameState with _$GameState {
       fromJson: maybeDateTimeFromJson,
       toJson: maybeDateTimeToJson,
     )
-    required DateTime? startTimestamp,
+        required DateTime? startTimestamp,
     @JsonKey(
       fromJson: maybeDateTimeFromJson,
       toJson: maybeDateTimeToJson,
     )
-    required DateTime? endTimestamp,
+        required DateTime? endTimestamp,
     required DateTime lobbyTimestamp,
     required String? lastWinnerId,
   }) = _GameState;
@@ -58,9 +58,9 @@ class Requests with _$Requests {
 
   const factory Requests.updateUser({
     required String userId,
-    required double joystickX,
-    required double joystickY,
-    required bool buttonPressed,
+    double? joystickX,
+    double? joystickY,
+    bool? buttonPressed,
   }) = UpdateUserRequest;
 
   const factory Requests.updateGameState({

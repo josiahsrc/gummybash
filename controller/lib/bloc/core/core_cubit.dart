@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:controller/model/model.dart';
@@ -19,6 +20,7 @@ class CoreCubit extends Cubit<CoreState> {
   final logger = LoggingUtility.createTypedLogger(CoreCubit);
   WebSocketChannel? _channel;
   String? _userId;
+  Timer? _stillHereTimer;
 
   bool _isReady() {
     if (_userId == null) {
@@ -42,6 +44,15 @@ class CoreCubit extends Cubit<CoreState> {
     _channel?.sink.close(status.goingAway);
     _channel = WebSocketChannel.connect(Uri.parse(url));
     _channel!.stream.listen(_handleMessage);
+    _stillHereTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        if (!_isReady()) {
+          return;
+        }
+        _addMessage(Requests.updateUser(userId: _userId!));
+      },
+    );
   }
 
   Future<void> _addMessage(dynamic message) async {
@@ -139,6 +150,7 @@ class CoreCubit extends Cubit<CoreState> {
   @override
   Future<void> close() async {
     await _channel?.sink.close(status.goingAway);
+    _stillHereTimer?.cancel();
     return super.close();
   }
 }

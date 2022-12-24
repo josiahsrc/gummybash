@@ -26,9 +26,9 @@ interface JoinGameRequest {
 interface UpdateUserRequest {
   runtimeType: 'updateUser';
   userId: string;
-  joystickX: number;
-  joystickY: number;
-  buttonPressed: boolean;
+  joystickX?: number;
+  joystickY?: number;
+  buttonPressed?: boolean;
 }
 
 interface UpdateGameStateRequest {
