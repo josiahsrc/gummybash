@@ -23,8 +23,10 @@ function cloneGameState(state: GameState): GameState {
 
 const PORT = 8080;
 const KICK_LATENCY = 1000 * 5;
-const GAME_DURATION = 1000 * 60 * 2;
+// const GAME_DURATION = 1000 * 60 * 2;
+const GAME_DURATION = 1000 * 5;
 const CREDITS_DURATION = 1000 * 8;
+const SYNC_INTERVAL = 5;
 
 const server = http.createServer();
 server.listen(PORT);
@@ -147,6 +149,7 @@ setInterval(() => {
   }
 
   // Send game state to all clients
+  state.updatedAt = new Date().toISOString();
   wss.broadcast(JSON.stringify(<GameStateResponse>{
     runtimeType: 'gameState',
     gameState: state,
@@ -162,6 +165,6 @@ setInterval(() => {
 
   // update last state
   lastState = cloneGameState(state);
-}, 5);
+}, SYNC_INTERVAL);
 
 console.log(`Server started on port ${PORT}`);

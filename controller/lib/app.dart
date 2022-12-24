@@ -20,6 +20,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late final AppRouter appRouter;
+  String? _lastRoute;
 
   @override
   void initState() {
@@ -36,7 +37,10 @@ class _AppState extends State<App> {
 
   void syncRouterState(CoreState state) {
     final route = getRouteForCoreState(state);
-    appRouter.replaceAll([route]);
+    if (route.path != _lastRoute) {
+      appRouter.replaceAll([route]);
+      _lastRoute = route.path;
+    }
   }
 
   @override
@@ -53,11 +57,6 @@ class _AppState extends State<App> {
       builder: (context) => MultiBlocListener(
         listeners: [
           BlocListener<CoreCubit, CoreState>(
-            listenWhen: (previous, current) {
-              final prev = getRouteForCoreState(previous);
-              final curr = getRouteForCoreState(current);
-              return prev != curr;
-            },
             listener: (context, state) => syncRouterState(state),
           ),
         ],

@@ -4,5 +4,7 @@ part of 'play_cubit.dart';
 
 @freezed
 class PlayState with _$PlayState {
-  const factory PlayState() = _PlayState;
+  const factory PlayState({
+    String? timeRemaining,
+  }) = _PlayState;
 }
