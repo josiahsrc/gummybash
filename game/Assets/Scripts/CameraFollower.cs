@@ -10,6 +10,7 @@ public class CameraFollower : Singleton<CameraFollower>
 	public float maxDistance = 30;
 	public float deltaMult = 0.2f;
 	public float smoothing = 0.2f;
+  public float angle = 30f;
 
 	private Vector3 _vel = Vector3.zero;
 
@@ -36,9 +37,13 @@ public class CameraFollower : Singleton<CameraFollower>
     distance = Mathf.Clamp(distance, minDistance, maxDistance);
     
     var top = new Vector3(target.x, distance, target.z);
-    var bot = new Vector3(target.x, 0, target.z);
+    top.y = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
+    top.z = -Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
+
 		transform.position = Vector3.SmoothDamp(transform.position, top, ref _vel, smoothing);
-		transform.LookAt(bot, Vector3.forward);
+
+    var lookAt = new Vector3(target.x, 0, target.z);
+		transform.LookAt(lookAt, Vector3.forward);
 	}
 
 	private void LateUpdate()
