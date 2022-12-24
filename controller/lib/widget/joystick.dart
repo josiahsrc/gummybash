@@ -77,7 +77,7 @@ class _JoystickState extends State<Joystick> with AnimationMixin {
       final offset = pos - center;
 
       var retOffset = offset;
-      final maxOffset = radius / 16;
+      final maxOffset = radius / 12;
       if (retOffset.distance > maxOffset) {
         retOffset = retOffset * (maxOffset / retOffset.distance);
       }

@@ -35,6 +35,18 @@ class PlayCubit extends Cubit<PlayState> {
     });
   }
 
+  void updateControls({
+    double joystickX = 0,
+    double joystickY = 0,
+    bool isShooting = false,
+  }) {
+    coreCubit.updateUser(
+      joystickX: joystickX,
+      joystickY: joystickY,
+      buttonPressed: isShooting,
+    );
+  } 
+
   @override
   Future<void> close() async {
     await _coreCubitSubscription?.cancel();

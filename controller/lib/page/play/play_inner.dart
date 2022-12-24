@@ -17,7 +17,12 @@ class PlayInner extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
-            child: Joystick(),
+            child: Joystick(
+              onMove: (delta) => playCubit.updateControls(
+                joystickX: delta.dx,
+                joystickY: delta.dy,
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -31,7 +36,7 @@ class PlayInner extends StatelessWidget {
                   child: Material(
                     color: Colors.grey,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () => playCubit.updateControls(isShooting: true),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
