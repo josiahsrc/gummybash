@@ -20,7 +20,7 @@ class PlayInner extends StatelessWidget {
             child: Joystick(
               onMove: (delta) => playCubit.updateControls(
                 joystickX: delta.dx,
-                joystickY: delta.dy,
+                joystickY: -delta.dy,
               ),
             ),
           ),

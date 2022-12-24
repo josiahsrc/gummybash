@@ -15,6 +15,10 @@ class PlayCubit extends Cubit<PlayState> {
 
   final CoreCubit coreCubit;
   StreamSubscription? _coreCubitSubscription;
+  double _joystickX = 0;
+  double _joystickY = 0;
+  bool _isShooting = false;
+  Timer? _timer;
 
   void init() {
     _coreCubitSubscription = coreCubit.streamWithFirst.listen((state) {
@@ -33,6 +37,14 @@ class PlayCubit extends Cubit<PlayState> {
 
       emit(this.state.copyWith(timeRemaining: prettyTimeRemaining));
     });
+
+    _timer = Timer.periodic(const Duration(milliseconds: 40), (_) {
+      coreCubit.updateUser(
+        joystickX: _joystickX,
+        joystickY: _joystickY,
+        buttonPressed: _isShooting,
+      );
+    });
   }
 
   void updateControls({
@@ -45,11 +57,15 @@ class PlayCubit extends Cubit<PlayState> {
       joystickY: joystickY,
       buttonPressed: isShooting,
     );
-  } 
+    _joystickX = joystickX;
+    _joystickY = joystickY;
+    _isShooting = isShooting;
+  }
 
   @override
   Future<void> close() async {
     await _coreCubitSubscription?.cancel();
+    _timer?.cancel();
     return super.close();
   }
 }
