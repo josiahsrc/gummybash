@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9143724783748341855
+--- !u!1 &505299755
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9143724783748341841}
-  - component: {fileID: 9143724783748341842}
-  - component: {fileID: 9143724783748341843}
-  - component: {fileID: 9143724783748341853}
-  - component: {fileID: 9143724783748341846}
-  - component: {fileID: 9143724783748341847}
-  - component: {fileID: 9143724783748341840}
-  - component: {fileID: 9143724783748341845}
-  m_Layer: 0
-  m_Name: Gummy
+  - component: {fileID: 505299756}
+  - component: {fileID: 505299758}
+  - component: {fileID: 505299757}
+  m_Layer: 7
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9143724783748341841
+--- !u!4 &505299756
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9143724783748341855}
+  m_GameObject: {fileID: 505299755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.6, y: 0, z: -0.32}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 9143724783748341841}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &9143724783748341842
+--- !u!33 &505299758
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9143724783748341855}
+  m_GameObject: {fileID: 505299755}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &9143724783748341843
+--- !u!23 &505299757
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9143724783748341855}
+  m_GameObject: {fileID: 505299755}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -88,6 +83,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &9143724783748341855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9143724783748341841}
+  - component: {fileID: 9143724783748341853}
+  - component: {fileID: 9143724783748341846}
+  - component: {fileID: 9143724783748341847}
+  - component: {fileID: 9143724783748341840}
+  - component: {fileID: 9143724783748341845}
+  - component: {fileID: 929112304}
+  - component: {fileID: 929112303}
+  m_Layer: 7
+  m_Name: GummyBear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9143724783748341841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143724783748341855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.6, y: 0, z: -0.32}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 505299756}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9143724783748341853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,12 +146,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa798ebf945492183814571a39647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableComputerMovement: 0
+  enableComputerMovement: 1
   player: {fileID: 9143724783748341840}
   rb: {fileID: 9143724783748341847}
   speed: 10
   angularSmoothing: 10
   movementSmoothing: 0.1
+  movementRecovery: 15
 --- !u!54 &9143724783748341847
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -160,3 +195,37 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &929112304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143724783748341855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614990e73c71d473e9228a2f979faffc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mover: {fileID: 9143724783748341846}
+  health: {fileID: 929112303}
+--- !u!114 &929112303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143724783748341855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01145735c01b74d699e1df741c851014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitPoints: 1
+  maxHealth: 1
+  onDie:
+    m_PersistentCalls:
+      m_Calls: []
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
