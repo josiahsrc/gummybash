@@ -101,7 +101,7 @@ Transform:
   m_GameObject: {fileID: 9143724783748341855}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.6, y: 0, z: -0.32}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1380318809}
@@ -293,6 +293,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GummyBear
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 1f35e5ad564c647dd814928d1d662f97,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ec43c0d8f96564133bbe55486acd815c, type: 2}
     - target: {fileID: 5866666021909216657, guid: 1f35e5ad564c647dd814928d1d662f97,
         type: 3}
       propertyPath: m_ApplyRootMotion

@@ -67,5 +67,6 @@ public class GummyBear : PlayerController
 	{
 		damager.Fire();
 		force.Fire(transform.position);
+		bearAnimator.ResetTrigger("Fire");
 	}
 }
