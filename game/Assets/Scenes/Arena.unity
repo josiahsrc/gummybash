@@ -6269,6 +6269,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CandyPowerup (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4225118588458024976, guid: e4e2aa81957b54aada3f2266bb412339,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4225118588458024983, guid: e4e2aa81957b54aada3f2266bb412339,
         type: 3}
       propertyPath: m_RootOrder
@@ -9388,6 +9393,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CandyPowerup
       objectReference: {fileID: 0}
+    - target: {fileID: 4225118588458024976, guid: e4e2aa81957b54aada3f2266bb412339,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4225118588458024983, guid: e4e2aa81957b54aada3f2266bb412339,
         type: 3}
       propertyPath: m_RootOrder
@@ -10810,7 +10820,7 @@ PrefabInstance:
     - target: {fileID: 910915425285278899, guid: a79cf43dfc7414c4581206c5ea53f464,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 910915425285278906, guid: a79cf43dfc7414c4581206c5ea53f464,
         type: 3}
@@ -10893,11 +10903,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 143522130, guid: 740c3a9358ce640e18e7859da782a285, type: 3}
       propertyPath: gap
-      value: 22
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 929112303, guid: 740c3a9358ce640e18e7859da782a285, type: 3}
       propertyPath: hitPoints
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 929112304, guid: 740c3a9358ce640e18e7859da782a285, type: 3}
       propertyPath: bigMaterial
@@ -10930,7 +10940,7 @@ PrefabInstance:
     - target: {fileID: 9143724783748341841, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.32
+      value: 0.51
       objectReference: {fileID: 0}
     - target: {fileID: 9143724783748341841, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
@@ -10940,7 +10950,7 @@ PrefabInstance:
     - target: {fileID: 9143724783748341841, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.59
+      value: -4.52
       objectReference: {fileID: 0}
     - target: {fileID: 9143724783748341841, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
@@ -10990,13 +11000,23 @@ PrefabInstance:
       objectReference: {fileID: 827351362}
     - target: {fileID: 9143724783748341846, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
+      propertyPath: force
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143724783748341846, guid: 740c3a9358ce640e18e7859da782a285,
+        type: 3}
       propertyPath: speed
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9143724783748341846, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}
       propertyPath: maxControl
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143724783748341846, guid: 740c3a9358ce640e18e7859da782a285,
+        type: 3}
+      propertyPath: randomRate
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 9143724783748341855, guid: 740c3a9358ce640e18e7859da782a285,
         type: 3}

@@ -18,7 +18,6 @@ public class GummyBear : PlayerController
 	public float bigDamageMultipler = 1.5f;
 	public float bigForceMultiplier = 1.5f;
 	public float bigMassMultiplier = 3f;
-	public float bigSpeedMultiplier = 1.4f;
 
 	public PhysicMaterial wormMaterial;
 	public PhysicMaterial normalMaterial;
@@ -45,7 +44,6 @@ public class GummyBear : PlayerController
 	private Coroutine bigCoroutine = null;
 	private Material hammerMat = null;
 	private float initialMass = 0f;
-	private float initialSpeed = 0f;
 
 	private bool HasHammer => hammerCoroutine != null;
 	private bool IsBig => bigCoroutine != null;
@@ -113,7 +111,6 @@ public class GummyBear : PlayerController
 		initialDamage = damager.damage;
 		initialForce = force.force;
 		initialMass = mover.rb.mass;
-		initialSpeed = mover.speed;
 	}
 
 	private void OnHealthChange(int prev, int curr)
@@ -157,7 +154,8 @@ public class GummyBear : PlayerController
 			damager.damage = initialDamage;
 			force.force = initialForce;
 			mover.rb.mass = initialMass;
-			mover.speed = initialSpeed;
+			mover.useControlledVelocity = health.hitPoints == 0;
+			mover.randomJoystick = health.hitPoints == 0;
 		}
 		else if (health.hitPoints == 2)
 		{
@@ -168,7 +166,8 @@ public class GummyBear : PlayerController
 			damager.damage = Mathf.RoundToInt(initialDamage * bigDamageMultipler);
 			force.force = initialForce * bigForceMultiplier;
 			mover.rb.mass = initialMass * bigMassMultiplier;
-			mover.speed = initialSpeed * bigSpeedMultiplier;
+			mover.useControlledVelocity = false;
+      mover.randomJoystick = false;
  		}
 		else
 		{
