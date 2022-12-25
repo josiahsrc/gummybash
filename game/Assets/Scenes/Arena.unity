@@ -10523,6 +10523,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GingerBreadHouse
       objectReference: {fileID: 0}
+    - target: {fileID: 910915425285278906, guid: a79cf43dfc7414c4581206c5ea53f464,
+        type: 3}
+      propertyPath: enableComputerMovement
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 910915425285278909, guid: a79cf43dfc7414c4581206c5ea53f464,
         type: 3}
       propertyPath: m_RootOrder
@@ -10578,6 +10583,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1103228118756956250, guid: a79cf43dfc7414c4581206c5ea53f464,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 07ada6082d6ed42bf836aa95eb9275ef, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a79cf43dfc7414c4581206c5ea53f464, type: 3}
 --- !u!1001 &9143724784568254651

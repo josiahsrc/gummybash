@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa798ebf945492183814571a39647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableComputerMovement: 1
+  enableComputerMovement: 0
   player: {fileID: 9143724783748341840}
   rb: {fileID: 9143724783748341847}
   speed: 6
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01145735c01b74d699e1df741c851014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 0
+  hitPoints: 1
   maxHealth: 2
   onDie:
     m_PersistentCalls:
