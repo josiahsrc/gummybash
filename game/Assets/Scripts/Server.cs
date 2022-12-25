@@ -69,7 +69,7 @@ public class Server : Singleton<Server>
 	{
 		SendUpdateGameStateRequest(new UpdateGameStateRequest()
 		{
-			winner = ModelUtils.userTypeToString(winner),
+			winner = Utility.userTypeToString(winner),
 		});
 	}
 

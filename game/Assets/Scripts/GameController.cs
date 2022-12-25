@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour
 			if (!_players.ContainsKey(userId))
 			{
 				var user = userDict[userId];
-				var type = ModelUtils.userTypeFromString(user.type);
+				var type = Utility.userTypeFromString(user.type);
 				GameObject prefab;
 				if (type == UserType.gingerBreadHouse)
 				{

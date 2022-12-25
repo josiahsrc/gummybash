@@ -2,31 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ModelUtils
-{
-	public static UserType userTypeFromString(string value)
-	{
-		if (value == "gummyBear") {
-			return UserType.gummyBear;
-		} else if (value == "gingerBreadHouse") {
-			return UserType.gingerBreadHouse;
-		} else {
-			return UserType.none;
-		}
-	}
-
-  public static string userTypeToString(UserType value)
-  {
-    if (value == UserType.gummyBear) {
-      return "gummyBear";
-    } else if (value == UserType.gingerBreadHouse) {
-      return "gingerBreadHouse";
-    } else {
-      return "none";
-    }
-  }
-}
-
 public enum UserType {
   none,
   gummyBear,

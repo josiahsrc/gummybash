@@ -40,3 +40,11 @@ extension ColorX on MaterialColor {
     return Color.lerp(this[lower], this[upper], t)!;
   }
 }
+
+Color hexToColor(String code) {
+  return Color(int.parse(code.substring(1, 9), radix: 16));
+}
+
+String colorToHex(Color color) {
+  return '#${color.value.toRadixString(16)}';
+}
