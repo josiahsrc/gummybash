@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class GummyBear : MonoBehaviour
+public class GummyBear : PlayerController
 {
-	public CharacterMover mover;
 	public Health health;
 	public RadiusForceAdder force;
-  public RadiusDamager damager;
+	public RadiusDamager damager;
+	public GameObject hammer;
+	public Animator bearAnimator;
 
 	public static HashSet<GummyBear> bears = new();
 
@@ -27,33 +29,43 @@ public class GummyBear : MonoBehaviour
 
 	private void OnHealthChange(int prev, int curr)
 	{
-    
+
 	}
 
 	private void OnDie()
 	{
-    bool win = true;
-    foreach (GummyBear bear in bears)
-    {
-      if (bear.health.IsAlive)
-      {
-        win = false;
-        break;
-      }
-    }
+		bool win = true;
+		foreach (GummyBear bear in bears)
+		{
+			if (bear.health.IsAlive)
+			{
+				win = false;
+				break;
+			}
+		}
 
-    if (win)
-    {
-      Debug.Log("GINGER BREAD HOUSE WINS");
-    }
+		if (win)
+		{
+			Debug.Log("GINGER BREAD HOUSE WINS");
+		}
 	}
 
-	private void Update()
+	protected override void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space) && mover.enableComputerMovement)
-		{
-			force.Fire(transform.position);
-      damager.Fire();
-		}
+		base.Update();
+
+		var speed = mover.rb.velocity.magnitude;
+		bearAnimator.SetFloat("Movement", Mathf.Clamp01(speed / (mover.speed * .5f)));
+	}
+
+	protected override void OnButtonPressed()
+	{
+		bearAnimator.SetTrigger("Fire");
+	}
+
+	public void OnFire()
+	{
+		damager.Fire();
+		force.Fire(transform.position);
 	}
 }
