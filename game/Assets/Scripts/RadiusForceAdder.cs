@@ -21,15 +21,15 @@ public class RadiusForceAdder : MonoBehaviour
 		var hits = Physics.OverlapSphere(transform.position, radius, layerMask);
 		foreach (var hit in hits)
 		{
-			var mover = hit.GetComponent<CharacterMover>();
-			if (!mover || mover.gameObject == ignore)
+			var rb = hit.GetComponent<Rigidbody>();
+			if (!rb || rb.gameObject == ignore)
 				continue;
 
-			var moverPos = mover.transform.position;
+			var moverPos = rb.position;
 			var diff = moverPos - origin;
 			var multiplier = Mathf.Max(minMultipler, 1 - (diff.magnitude / radius));
 			var forceDir = diff.normalized;
-			mover.AddForce(forceDir * force * multiplier);
+			rb.AddForce(forceDir * force * multiplier, ForceMode.Impulse);
 		}
 	}
 

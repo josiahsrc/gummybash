@@ -8,21 +8,28 @@ public class CharacterMover : MonoBehaviour
 	public bool enableComputerMovement = false;
 	public Player player;
 	public Rigidbody rb;
-	public float speed = 10;
+	public Transform body;
+	public float smoothJoystickRate = 20f;
+	public Collider col = null;
+	public float speed = 3f;
+  public float movementSmoothing = 0.1f;
+	public float recoveryRate = 15f;
+  public float maxControl = 0.75f;
 
 	public float angularSmoothing = 15f;
-	public float movementSmoothing = .1f;
-  public float movementRecovery = 3f;
 
 	private Vector3 _lastDir = -Vector3.forward;
-	private Vector3 _vel = Vector3.zero;
-  private float _movemventSmoothing = 0;
+	[ShowNonSerializedField] private float _control = 0f;
+  private Vector3 _velocity = Vector3.zero;
+
+	[HideInInspector]
+	public Vector3 smoothJoystick = Vector3.zero;
 
 	private void Start()
 	{
-    _movemventSmoothing = movementSmoothing;
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ |
-			RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionY;
+			RigidbodyConstraints.FreezeRotationY;
+		_control = maxControl;
 	}
 
 	private Vector3 GetMovementFromPlayer()
@@ -31,12 +38,12 @@ public class CharacterMover : MonoBehaviour
 		if (user == null)
 			return Vector3.zero;
 
-    var updatedAtIsoString = user.updatedAt;
-    var updatedAt = System.DateTime.Parse(updatedAtIsoString);
-    var now = System.DateTime.Now;
-    var diff = now - updatedAt;
-    if (diff.TotalSeconds > 2)
-      return Vector3.zero;
+		var updatedAtIsoString = user.updatedAt;
+		var updatedAt = System.DateTime.Parse(updatedAtIsoString);
+		var now = System.DateTime.Now;
+		var diff = now - updatedAt;
+		if (diff.TotalSeconds > 2)
+			return Vector3.zero;
 
 		var joystickX = user.joystickX;
 		var joystickY = user.joystickY;
@@ -52,26 +59,21 @@ public class CharacterMover : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-    _movemventSmoothing = Mathf.Lerp(_movemventSmoothing, movementSmoothing, Time.fixedDeltaTime * movementRecovery);
+    _control = Mathf.Lerp(_control, maxControl, Time.deltaTime * recoveryRate);
 
 		var joystick = enableComputerMovement ? ComputerMovement() : GetMovementFromPlayer();
 		joystick = joystick.normalized;
-    if (joystick.sqrMagnitude > 0.001f)
+		if (joystick.sqrMagnitude > 0.001f)
 			_lastDir = joystick.normalized;
-
-		var movement = joystick * speed;
-		movement = Vector3.SmoothDamp(rb.velocity, movement, ref _vel, _movemventSmoothing);
+		smoothJoystick = Vector3.Lerp(smoothJoystick, joystick, Time.deltaTime * smoothJoystickRate);
 
 		var targetRotation = Quaternion.LookRotation(_lastDir, Vector3.up);
-		var rotation = Quaternion.Slerp(transform.rotation, targetRotation, angularSmoothing * Time.fixedDeltaTime);
-		transform.rotation = rotation;
-
-		rb.velocity = movement;
+		body.rotation = Quaternion.Slerp(body.rotation, targetRotation, angularSmoothing * Time.fixedDeltaTime);
+    
+    var movement = joystick * speed;
+    movement = Vector3.SmoothDamp(rb.velocity, movement, ref _velocity, movementSmoothing);
+		var nextVel =  Vector3.Lerp(rb.velocity, movement, _control);
+		nextVel.y = rb.velocity.y;
+    rb.velocity = nextVel;
 	}
-
-  public void AddForce(Vector3 force)
-  {
-    _movemventSmoothing = force.magnitude;
-    rb.AddForce(force, ForceMode.Impulse);
-  }
 }

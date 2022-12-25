@@ -17,8 +17,12 @@ public class GummyBear : PlayerController
 	public float scaleRate = 30f;
 	public float bigDamageMultipler = 1.5f;
 	public float bigForceMultiplier = 1.5f;
-	public float bigSpeedMultiplier = 1.3f;
 	public float bigMassMultiplier = 3f;
+	public float bigSpeedMultiplier = 1.4f;
+
+	public PhysicMaterial wormMaterial;
+	public PhysicMaterial normalMaterial;
+	public PhysicMaterial bigMaterial;
 
 	public GameObject hammerObj = null;
 	public float hammerTime = 10f;
@@ -37,11 +41,11 @@ public class GummyBear : PlayerController
 	private Vector3 initialScale;
 	private int initialDamage = 0;
 	private float initialForce = 0;
-	private float initialSpeed = 0;
 	private Coroutine hammerCoroutine = null;
 	private Coroutine bigCoroutine = null;
 	private Material hammerMat = null;
 	private float initialMass = 0f;
+	private float initialSpeed = 0f;
 
 	private bool HasHammer => hammerCoroutine != null;
 	private bool IsBig => bigCoroutine != null;
@@ -108,8 +112,8 @@ public class GummyBear : PlayerController
 		initialScale = transform.localScale;
 		initialDamage = damager.damage;
 		initialForce = force.force;
-		initialSpeed = mover.speed;
 		initialMass = mover.rb.mass;
+		initialSpeed = mover.speed;
 	}
 
 	private void OnHealthChange(int prev, int curr)
@@ -139,8 +143,7 @@ public class GummyBear : PlayerController
 	{
 		base.Update();
 
-		var speed = mover.rb.velocity.magnitude;
-		bearAnimator.SetFloat("Movement", Mathf.Clamp01(speed / (mover.speed * .5f)));
+		bearAnimator.SetFloat("Movement", mover.smoothJoystick.magnitude);
 
 		TryAssignMaterials();
 
@@ -149,22 +152,24 @@ public class GummyBear : PlayerController
 		{
 			wormObj.SetActive(health.hitPoints == 0);
 			bodyObj.SetActive(health.hitPoints == 1);
+			mover.col.sharedMaterial = health.hitPoints == 0 ? wormMaterial : normalMaterial;
 			targetScale = initialScale;
 			damager.damage = initialDamage;
 			force.force = initialForce;
-			mover.speed = initialSpeed;
 			mover.rb.mass = initialMass;
+			mover.speed = initialSpeed;
 		}
 		else if (health.hitPoints == 2)
 		{
 			wormObj.SetActive(false);
 			bodyObj.SetActive(true);
+			mover.col.sharedMaterial = bigMaterial;
 			targetScale = initialScale * bigScaleMultiplier;
 			damager.damage = Mathf.RoundToInt(initialDamage * bigDamageMultipler);
 			force.force = initialForce * bigForceMultiplier;
-			mover.speed = initialSpeed * bigSpeedMultiplier;
 			mover.rb.mass = initialMass * bigMassMultiplier;
-		}
+			mover.speed = initialSpeed * bigSpeedMultiplier;
+ 		}
 		else
 		{
 			throw new System.NotImplementedException();
