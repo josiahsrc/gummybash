@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 910915425285278906}
   - component: {fileID: 910915425285278907}
   - component: {fileID: 910915425285278908}
-  - component: {fileID: 910915425285278905}
   - component: {fileID: 8232916561685236739}
   - component: {fileID: 8232916561345943276}
+  - component: {fileID: 651580539}
   m_Layer: 8
   m_Name: GingerBreadHouse
   m_TagString: Untagged
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa798ebf945492183814571a39647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableComputerMovement: 1
+  enableComputerMovement: 0
   player: {fileID: 910915425285278908}
   rb: {fileID: 910915425285278907}
   speed: 10
@@ -99,20 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3a2e85c16c5426ea4ad2a7ecfa4efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &910915425285278905
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910915425285278899}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8232916561685236739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +133,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mover: {fileID: 910915425285278906}
   health: {fileID: 8232916561685236739}
+--- !u!65 &651580539
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910915425285278899}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7956182, y: 2.0578709, z: 2.2501397}
+  m_Center: {x: 0, y: 1.0483665, z: 0}
 --- !u!1 &8232916562794931620
 GameObject:
   m_ObjectHideFlags: 0

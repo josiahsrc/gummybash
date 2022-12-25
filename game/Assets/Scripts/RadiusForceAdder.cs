@@ -10,9 +10,15 @@ public class RadiusForceAdder : MonoBehaviour
 	public float force = 1;
 	public float minMultipler = 0.1f;
 
+  private float GetScaledRadius()
+  {
+    return radius * transform.lossyScale.x;
+  }
+
 	public void Fire(Vector3 origin)
 	{
-		var hits = Physics.OverlapSphere(origin, radius, layerMask);
+    var radius = GetScaledRadius();
+		var hits = Physics.OverlapSphere(transform.position, radius, layerMask);
 		foreach (var hit in hits)
 		{
 			var mover = hit.GetComponent<CharacterMover>();
@@ -20,7 +26,6 @@ public class RadiusForceAdder : MonoBehaviour
 				continue;
 
 			var moverPos = mover.transform.position;
-			moverPos.y = origin.y;
 			var diff = moverPos - origin;
 			var multiplier = Mathf.Max(minMultipler, 1 - (diff.magnitude / radius));
 			var forceDir = diff.normalized;
@@ -30,6 +35,7 @@ public class RadiusForceAdder : MonoBehaviour
 
 	private void OnDrawGizmosSelected()
 	{
+    var radius = GetScaledRadius();
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.position, radius);
 	}

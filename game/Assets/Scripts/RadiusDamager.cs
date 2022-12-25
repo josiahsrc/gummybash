@@ -8,9 +8,14 @@ public class RadiusDamager : MonoBehaviour
 	public float radius = 1;
 	public LayerMask layerMask;
 
+  private float GetScaledRadius()
+  {
+    return radius * transform.lossyScale.x;
+  }
+
 	public void Fire()
 	{
-		var hits = Physics.OverlapSphere(transform.position, radius, layerMask);
+		var hits = Physics.OverlapSphere(transform.position, GetScaledRadius(), layerMask);
 		foreach (var hit in hits)
 		{
 			var targetable = hit.GetComponent<Health>();
@@ -23,6 +28,6 @@ public class RadiusDamager : MonoBehaviour
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(transform.position, radius);
+		Gizmos.DrawWireSphere(transform.position, GetScaledRadius());
 	}
 }

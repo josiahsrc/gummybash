@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &143522125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 143522129}
+  - component: {fileID: 143522130}
+  m_Layer: 0
+  m_Name: Worm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &143522129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143522125}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.41666663, y: 0.41666663, z: 0.41666663}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9143724783748341841}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &143522130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143522125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0491944bcbbac4d52b184f0f0686b1ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyPartPrefab: {fileID: 452127828361647276, guid: 45d6036fb670045749f571b3fb07af9a,
+    type: 3}
+  bodySpeed: 10
+  gap: 12
+  bodyParts: 10
+  maxPositions: 300
 --- !u!1 &1380318808
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  radius: 5
+  radius: 1.09
   layerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -101,11 +151,12 @@ Transform:
   m_GameObject: {fileID: 9143724783748341855}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.6, y: 0, z: -0.32}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1380318809}
   - {fileID: 2046482330553378004}
+  - {fileID: 143522129}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -136,7 +187,7 @@ MonoBehaviour:
   enableComputerMovement: 1
   player: {fileID: 9143724783748341840}
   rb: {fileID: 9143724783748341847}
-  speed: 10
+  speed: 6
   angularSmoothing: 10
   movementSmoothing: 0.1
   movementRecovery: 15
@@ -201,6 +252,21 @@ MonoBehaviour:
   damager: {fileID: 1380318811}
   hammer: {fileID: 5746619671323499940}
   bearAnimator: {fileID: 5370186325595176622}
+  sharedMaterial: {fileID: 2100000, guid: 5a37c97711efe4e789027f0399426f6c, type: 2}
+  color: {r: 1, g: 0.687739, b: 0, a: 1}
+  bigScaleMultiplier: 2.1
+  scaleRate: 30
+  bigDamageMultipler: 1.5
+  bigForceMultiplier: 1.5
+  bigSpeedMultiplier: 1.3
+  bigMassMultiplier: 3
+  hammerObj: {fileID: 5746619671323499940}
+  hammerTime: 10
+  bigTime: 10
+  flickerRate: 0.1
+  flickerStartTime: 2
+  bodyObj: {fileID: 1670061932323749486}
+  wormObj: {fileID: 143522125}
 --- !u!114 &929112303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01145735c01b74d699e1df741c851014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 1
-  maxHealth: 1
+  hitPoints: 0
+  maxHealth: 2
   onDie:
     m_PersistentCalls:
       m_Calls: []
