@@ -62,6 +62,8 @@ GameObject:
   - component: {fileID: 1380318809}
   - component: {fileID: 1380318810}
   - component: {fileID: 1380318811}
+  - component: {fileID: 1800210983}
+  - component: {fileID: 1800210984}
   m_Layer: 7
   m_Name: SmashZone
   m_TagString: Untagged
@@ -99,10 +101,25 @@ MonoBehaviour:
   ignore: {fileID: 9143724783748341855}
   layerMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 384
   radius: 2
   force: 30
   minMultipler: 0.4
+  onFire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1800210984}
+        m_TargetAssemblyTypeName: RadiusForceAdder, Assembly-CSharp
+        m_MethodName: Fire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1380318811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +137,63 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  onFire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1800210983}
+        m_TargetAssemblyTypeName: RadiusDamager, Assembly-CSharp
+        m_MethodName: Fire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1800210983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380318808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b1d0509552e41acbd4ab23a671136e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: -1
+  radius: 1.09
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1800210984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380318808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0d1dbce386441c3ac712db074d4223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignore: {fileID: 9143724783748341855}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  radius: 2
+  force: 15
+  minMultipler: 0.4
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &135743931779648374
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa798ebf945492183814571a39647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableComputerMovement: 1
+  enableComputerMovement: 0
   player: {fileID: 9143724783748341840}
   rb: {fileID: 9143724783748341847}
   body: {fileID: 828039711200490352}
@@ -232,6 +306,7 @@ MonoBehaviour:
   useControlledVelocity: 0
   randomJoystick: 0
   randomRate: 1.5
+  randomControler: 0.3
   angularSmoothing: 10
   smoothJoystick: {x: 0, y: 0, z: 0}
 --- !u!54 &9143724783748341847

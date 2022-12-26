@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8232916561685236739}
   - component: {fileID: 8232916561345943276}
   - component: {fileID: 651580539}
+  - component: {fileID: 226565367}
   m_Layer: 8
   m_Name: GingerBreadHouse
   m_TagString: Untagged
@@ -64,13 +65,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa798ebf945492183814571a39647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableComputerMovement: 0
+  enableComputerMovement: 1
   player: {fileID: 910915425285278908}
   rb: {fileID: 910915425285278907}
+  body: {fileID: 910915425285278909}
+  smoothJoystickRate: 20
+  col: {fileID: 651580539}
   speed: 10
-  angularSmoothing: 10
   movementSmoothing: 0.1
-  movementRecovery: 20
+  recoveryRate: 15
+  maxControl: 0.75
+  force: 30
+  useControlledVelocity: 0
+  randomJoystick: 0
+  randomRate: 5
+  randomControler: 0.3
+  angularSmoothing: 10
+  smoothJoystick: {x: 0, y: 0, z: 0}
 --- !u!54 &910915425285278907
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -113,6 +124,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 100
   maxHealth: 100
+  materialManager: {fileID: 0}
+  invincibilityDuration: 2
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -140,12 +153,29 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910915425285278899}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8aef1829d80174ea883720756955069c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.7956182, y: 2.0578709, z: 2.2501397}
   m_Center: {x: 0, y: 1.0483665, z: 0}
+--- !u!114 &226565367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910915425285278899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cb169b3031748b099a1897f400a66f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceMat: {fileID: 2100000, guid: 07ada6082d6ed42bf836aa95eb9275ef, type: 2}
+  recursive: 0
+  rendererObjs:
+  - {fileID: 7225656229974165018}
+  flickerIntensity: 0.75
 --- !u!1 &8232916562794931620
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,6 +227,9 @@ MonoBehaviour:
   radius: 2
   force: 30
   minMultipler: 0.4
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8232916562054250858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -269,8 +302,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: Body
       objectReference: {fileID: 0}
+    - target: {fileID: 9011216727254997296, guid: 56baa931480e341c9b3df9e509575c83,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 07ada6082d6ed42bf836aa95eb9275ef, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56baa931480e341c9b3df9e509575c83, type: 3}
+--- !u!1 &7225656229974165018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1587380263914981232, guid: 56baa931480e341c9b3df9e509575c83,
+    type: 3}
+  m_PrefabInstance: {fileID: 8232916562054250858}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8488028019805513345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56baa931480e341c9b3df9e509575c83,

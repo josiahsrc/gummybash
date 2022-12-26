@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GingerBreadHouse : Singleton<GingerBreadHouse>
+public class GingerBreadHouse : PlayerController
 {
-	public CharacterMover mover;
 	public Health health;
+	public Animator animator;
+	public float dashForce = 10f;
+	public float dashCooldown = .75f;
+
+	private float dashTime = 0f;
 
 	private void OnEnable()
 	{
@@ -27,5 +31,23 @@ public class GingerBreadHouse : Singleton<GingerBreadHouse>
 	private void OnDie()
 	{
 		print("WINNER IS BEARS!!!!");
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+		animator.SetFloat("Movement", mover.smoothJoystick.magnitude);
+		dashTime -= Time.deltaTime;
+	}
+
+	protected override void OnButtonPressed()
+	{
+		if (dashTime < 0)
+		{
+			animator.SetTrigger("Fire");
+			var fwd = transform.forward;
+			mover.rb.AddForce(fwd * dashForce, ForceMode.Impulse);
+			dashTime = dashCooldown;
+		}
 	}
 }
