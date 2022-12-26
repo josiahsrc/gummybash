@@ -13,28 +13,30 @@ public class CharacterMover : MonoBehaviour
 	public Collider col = null;
 	public float speed = 3f;
 	public float movementSmoothing = 0.1f;
-	public float recoveryRate = 15f;
-	public float maxControl = 0.75f;
+	public float recoveryTime = 1f;
 	public float force = 30f;
 	public bool useControlledVelocity = false;
 	public bool randomJoystick = false;
 	public float randomRate = 5f;
 	public float randomControler = 0.3f;
+	public GroundChecker groundChecker = null;
 
 	public float angularSmoothing = 15f;
 
 	private Vector3 _lastDir = -Vector3.forward;
-	[ShowNonSerializedField] private float _control = 0f;
+	[ShowNonSerializedField] private float _controlTime = 0f;
 	private Vector3 _velocity = Vector3.zero;
 
 	[ReadOnly]
 	public Vector3 smoothJoystick = Vector3.zero;
 
+	private float randomOffset;
+
 	private void Start()
 	{
+		randomOffset = Random.Range(0, 40f);
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ |
 			RigidbodyConstraints.FreezeRotationY;
-		_control = maxControl;
 	}
 
 	private Vector3 GetMovementFromPlayer()
@@ -62,9 +64,14 @@ public class CharacterMover : MonoBehaviour
 		return joystick;
 	}
 
+	public void BreakControlsTemporarily()
+	{
+		_controlTime = recoveryTime;
+	}
+
 	private void FixedUpdate()
 	{
-		_control = Mathf.Lerp(_control, maxControl, Time.deltaTime * recoveryRate);
+		_controlTime -= Time.deltaTime;
 
 		var joystick = enableComputerMovement ? ComputerMovement() : GetMovementFromPlayer();
 		joystick = joystick.normalized;
@@ -72,8 +79,8 @@ public class CharacterMover : MonoBehaviour
 			_lastDir = joystick.normalized;
 		if (randomJoystick)
 		{
-			var dirX = Mathf.PerlinNoise(Time.time * randomRate, 0f);
-			var dirY = Mathf.PerlinNoise(0f, Time.time * randomRate);
+			var dirX = Mathf.PerlinNoise(Time.time * randomRate + randomOffset, 0f);
+			var dirY = Mathf.PerlinNoise(0f, Time.time * randomRate + randomOffset);
 			dirX = Mathf.Lerp(-1f, 1f, dirX);
 			dirY = Mathf.Lerp(-1f, 1f, dirY);
 			joystick = (new Vector3(dirX + 0.05f, 0, dirY + 0.05f) + joystick * randomControler).normalized;
@@ -83,29 +90,33 @@ public class CharacterMover : MonoBehaviour
 		var targetRotation = Quaternion.LookRotation(_lastDir, Vector3.up);
 		body.rotation = Quaternion.Slerp(body.rotation, targetRotation, angularSmoothing * Time.fixedDeltaTime);
 
-		if (useControlledVelocity)
+		var groundCheck = !groundChecker || groundChecker.IsGrounded;
+		var controlCheck = _controlTime < 0;
+		if (groundCheck && controlCheck)
 		{
-			var movement = joystick * speed;
-			movement = Vector3.SmoothDamp(rb.velocity, movement, ref _velocity, movementSmoothing);
-			var nextVel = Vector3.Lerp(rb.velocity, movement, _control);
-			nextVel.y = rb.velocity.y;
-			rb.velocity = nextVel;
-		}
-		else
-		{
-			var up = transform.up;
-      var velocity = rb.velocity;
-      var velDir = velocity.normalized;
-      var joyDir = joystick.normalized;
-      var dot = Vector3.Dot(velDir, joyDir);
-			var orthog = Vector3.Cross(up, velDir).normalized;
-			var speed = velocity.magnitude;
+			if (useControlledVelocity)
+			{
+				var movement = joystick * speed;
+				movement = Vector3.SmoothDamp(rb.velocity, movement, ref _velocity, movementSmoothing);
+				movement.y = rb.velocity.y;
+				rb.velocity = movement;
+			}
+			else
+			{
+				var up = transform.up;
+				var velocity = rb.velocity;
+				var velDir = velocity.normalized;
+				var joyDir = joystick.normalized;
+				var dot = Vector3.Dot(velDir, joyDir);
+				var orthog = Vector3.Cross(up, velDir).normalized;
+				var speed = velocity.magnitude;
 
-      var force = joyDir * this.force;
-			if (dot > 0 && speed >= this.speed)
-				force = Vector3.Project(force, orthog);
+				var force = joyDir * this.force;
+				if (dot > 0 && speed >= this.speed)
+					force = Vector3.Project(force, orthog);
 
-      rb.AddForce(force, ForceMode.Acceleration);
+				rb.AddForce(force, ForceMode.Acceleration);
+			}
 		}
 	}
 }

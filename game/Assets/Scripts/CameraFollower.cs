@@ -12,6 +12,7 @@ public class CameraFollower : Singleton<CameraFollower>
 	public float smoothing = 0.2f;
   public float angle = 30f;
   public float angleSmoothing = 15f;
+	public Vector3 offset = Vector3.zero;
 
 	private Vector3 _vel = Vector3.zero;
 
@@ -40,6 +41,7 @@ public class CameraFollower : Singleton<CameraFollower>
     var top = new Vector3(target.x, distance, target.z);
     top.y = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
     top.z = -Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
+		top += offset;
 
 		var pos = Vector3.SmoothDamp(transform.position, top, ref _vel, smoothing);
 		transform.position = pos;

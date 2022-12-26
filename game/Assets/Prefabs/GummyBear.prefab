@@ -307,6 +307,7 @@ MonoBehaviour:
   randomJoystick: 0
   randomRate: 1.5
   randomControler: 0.3
+  groundChecker: {fileID: 0}
   angularSmoothing: 10
   smoothJoystick: {x: 0, y: 0, z: 0}
 --- !u!54 &9143724783748341847
