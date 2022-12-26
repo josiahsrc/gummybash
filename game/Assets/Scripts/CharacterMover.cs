@@ -92,17 +92,19 @@ public class CharacterMover : MonoBehaviour
 		}
 		else
 		{
-      // only apply a force proportional to the speed cap
+			var up = transform.up;
       var velocity = rb.velocity;
       var velDir = velocity.normalized;
       var joyDir = joystick.normalized;
       var dot = Vector3.Dot(velDir, joyDir);
-      
-      // TODO: Figure this out
-      var speedCap = speed * _control;
-      var speedDiff = speedCap - velocity.magnitude;
-      var force = speedDiff * dot;
-      rb.AddForce(joystick * force, ForceMode.Acceleration);
+			var orthog = Vector3.Cross(up, velDir).normalized;
+			var speed = velocity.magnitude;
+
+      var force = joyDir * this.force;
+			if (dot > 0 && speed >= this.speed)
+				force = Vector3.Project(force, orthog);
+
+      rb.AddForce(force, ForceMode.Acceleration);
 		}
 	}
 }
