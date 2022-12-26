@@ -9,6 +9,7 @@ public class WormEffect : MonoBehaviour
 	public int gap = 10;
 	public int bodyParts = 5;
 	public int maxPositions = 300;
+	public MaterialManager materialManager = null;
 
 	private List<Vector3> _positions = new();
 	private List<GameObject> _bodyParts = new();
@@ -22,12 +23,18 @@ public class WormEffect : MonoBehaviour
 			part.transform.rotation = transform.rotation;
 			_bodyParts.Add(part);
 		}
+		LinkToMaterialManager();
 	}
 
 	private void OnEnable()
 	{
+		_positions.Clear();
 		foreach (var part in _bodyParts)
+		{
+			part.transform.position = transform.position;
+			part.transform.rotation = transform.rotation;
 			part.SetActive(true);
+		}
 	}
 
 	private void OnDisable()
@@ -41,6 +48,7 @@ public class WormEffect : MonoBehaviour
 
 	private void OnDestroy()
 	{
+		UnlinkFromManager();
 		foreach (var part in _bodyParts)
 		{
 			if (part)
@@ -48,14 +56,32 @@ public class WormEffect : MonoBehaviour
 		}
 	}
 
-	public void SetMaterial(Material mat)
+	public void SetMaterialManager(MaterialManager manager)
 	{
-		foreach (var part in _bodyParts)
-		{
-			var rend = part.GetComponent<Renderer>();
-			if (rend)
-				rend.sharedMaterial = mat;
-		}
+		materialManager = manager;
+		LinkToMaterialManager();
+	}
+
+	public void RemoveMaterialManager()
+	{
+		UnlinkFromManager();
+		materialManager = null;
+	}
+
+	private void LinkToMaterialManager()
+	{
+		if (!materialManager)
+			return;
+		foreach (var obj in _bodyParts)
+			materialManager.AddRendObj(obj);
+	}
+
+	private void UnlinkFromManager()
+	{
+		if (!materialManager)
+			return;
+		foreach (var obj in _bodyParts)
+			materialManager.RemoveRendObj(obj);
 	}
 
 	void Update()

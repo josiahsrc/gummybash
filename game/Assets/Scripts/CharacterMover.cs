@@ -26,7 +26,7 @@ public class CharacterMover : MonoBehaviour
 	[ShowNonSerializedField] private float _control = 0f;
 	private Vector3 _velocity = Vector3.zero;
 
-	[HideInInspector]
+	[ReadOnly]
 	public Vector3 smoothJoystick = Vector3.zero;
 
 	private void Start()

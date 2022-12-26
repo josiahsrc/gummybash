@@ -47,9 +47,10 @@ MonoBehaviour:
   bodyPartPrefab: {fileID: 452127828361647276, guid: 45d6036fb670045749f571b3fb07af9a,
     type: 3}
   bodySpeed: 10
-  gap: 12
+  gap: 31
   bodyParts: 10
   maxPositions: 300
+  materialManager: {fileID: 0}
 --- !u!1 &1380318808
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +170,7 @@ GameObject:
   - component: {fileID: 9143724783748341845}
   - component: {fileID: 929112304}
   - component: {fileID: 929112303}
+  - component: {fileID: 827351370}
   m_Layer: 7
   m_Name: GummyBear
   m_TagString: Untagged
@@ -219,9 +221,17 @@ MonoBehaviour:
   enableComputerMovement: 1
   player: {fileID: 9143724783748341840}
   rb: {fileID: 9143724783748341847}
-  movementForce: 10
   body: {fileID: 828039711200490352}
   smoothJoystickRate: 20
+  col: {fileID: 9143724783748341845}
+  speed: 7
+  movementSmoothing: 0.1
+  recoveryRate: 15
+  maxControl: 1
+  force: 15
+  useControlledVelocity: 0
+  randomJoystick: 0
+  randomRate: 1.5
   angularSmoothing: 10
   smoothJoystick: {x: 0, y: 0, z: 0}
 --- !u!54 &9143724783748341847
@@ -259,7 +269,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9143724783748341855}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2876ea1d873334c57bf9ffc67700551b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.35
@@ -280,22 +290,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 9143724783748341840}
   mover: {fileID: 9143724783748341846}
+  hammerMaterialManager: {fileID: 1961838829}
+  gummyMaterialManager: {fileID: 827351370}
   health: {fileID: 929112303}
   force: {fileID: 1380318810}
   damager: {fileID: 1380318811}
   hammer: {fileID: 5746619671323499940}
   bearAnimator: {fileID: 5370186325595176622}
-  sharedMaterial: {fileID: 2100000, guid: 5a37c97711efe4e789027f0399426f6c, type: 2}
   color: {r: 1, g: 0.687739, b: 0, a: 1}
   bigScaleMultiplier: 2.1
   scaleRate: 30
   bigDamageMultipler: 1.5
   bigForceMultiplier: 1.5
   bigMassMultiplier: 3
-  hammerObj: {fileID: 5746619671323499940}
+  wormMaterial: {fileID: 13400000, guid: 7f61181074bcf4b76a9628e2bfd31f9e, type: 2}
+  normalMaterial: {fileID: 13400000, guid: 2876ea1d873334c57bf9ffc67700551b, type: 2}
+  bigMaterial: {fileID: 13400000, guid: 7090c4c7b6f6144b7b2145777370ea16, type: 2}
   hammerTime: 10
   bigTime: 10
-  flickerRate: 0.1
   flickerStartTime: 2
   bodyObj: {fileID: 1670061932323749486}
   wormObj: {fileID: 143522125}
@@ -313,12 +325,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 1
   maxHealth: 2
+  materialManager: {fileID: 827351370}
+  invincibilityDuration: 3
   onDie:
     m_PersistentCalls:
       m_Calls: []
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &827351370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143724783748341855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cb169b3031748b099a1897f400a66f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceMat: {fileID: 2100000, guid: 5a37c97711efe4e789027f0399426f6c, type: 2}
+  recursive: 0
+  rendererObjs: []
+  flickerIntensity: 0.75
 --- !u!1001 &2012028949034566463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -549,3 +579,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4828265572809531637}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1961838829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5746619671323499940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cb169b3031748b099a1897f400a66f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceMat: {fileID: 2100000, guid: def046cc146a8462a816624a6c13c0c7, type: 2}
+  recursive: 0
+  rendererObjs:
+  - {fileID: 5746619671323499940}
+  flickerIntensity: 0.75

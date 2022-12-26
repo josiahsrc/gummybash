@@ -5,12 +5,14 @@ using UnityEngine.Events;
 
 public class GummyBear : PlayerController
 {
+	public MaterialManager hammerMaterialManager = null;
+	public MaterialManager gummyMaterialManager = null;
+
 	public Health health;
 	public RadiusForceAdder force;
 	public RadiusDamager damager;
 	public GameObject hammer;
 	public Animator bearAnimator;
-	public Material sharedMaterial;
 	public Color color;
 
 	public float bigScaleMultiplier = 1.5f;
@@ -23,12 +25,8 @@ public class GummyBear : PlayerController
 	public PhysicMaterial normalMaterial;
 	public PhysicMaterial bigMaterial;
 
-	public GameObject hammerObj = null;
 	public float hammerTime = 10f;
-
 	public float bigTime = 10f;
-
-	public float flickerRate = 0.3f;
 	public float flickerStartTime = 1.5f;
 
 	public GameObject bodyObj = null;
@@ -42,7 +40,6 @@ public class GummyBear : PlayerController
 	private float initialForce = 0;
 	private Coroutine hammerCoroutine = null;
 	private Coroutine bigCoroutine = null;
-	private Material hammerMat = null;
 	private float initialMass = 0f;
 
 	private bool HasHammer => hammerCoroutine != null;
@@ -65,16 +62,15 @@ public class GummyBear : PlayerController
 	private void Awake()
 	{
 		SyncHammer();
-
-		var hammerRend = hammerObj.GetComponentInChildren<Renderer>();
-		hammerMat = new Material(hammerRend.sharedMaterial);
-		hammerRend.sharedMaterial = hammerMat;
 	}
 
 	private void StopHammer()
 	{
 		if (HasHammer)
+		{
 			StopCoroutine(hammerCoroutine);
+			hammerMaterialManager.StopFlicker();
+		}
 		hammerCoroutine = null;
 	}
 
@@ -87,7 +83,10 @@ public class GummyBear : PlayerController
 	private void StopBig()
 	{
 		if (IsBig)
+		{
 			StopCoroutine(bigCoroutine);
+			gummyMaterialManager.StopFlicker();
+		}
 		bigCoroutine = null;
 	}
 
@@ -167,8 +166,8 @@ public class GummyBear : PlayerController
 			force.force = initialForce * bigForceMultiplier;
 			mover.rb.mass = initialMass * bigMassMultiplier;
 			mover.useControlledVelocity = false;
-      mover.randomJoystick = false;
- 		}
+			mover.randomJoystick = false;
+		}
 		else
 		{
 			throw new System.NotImplementedException();
@@ -189,20 +188,15 @@ public class GummyBear : PlayerController
 		if (lastColor.HasValue && newColor == lastColor.Value)
 			return;
 
-		sharedMaterial = new Material(sharedMaterial);
+		var sharedMaterial = gummyMaterialManager.GetSharedMaterial();
 		sharedMaterial.color = newColor;
-
-		var bodyRend = bodyObj.GetComponentInChildren<Renderer>();
-		if (bodyRend != null)
-			bodyRend.sharedMaterial = sharedMaterial;
-
-		var wormRends = wormObj.GetComponentsInChildren<Renderer>();
-		foreach (var rend in wormRends)
-			rend.sharedMaterial = sharedMaterial;
+		gummyMaterialManager.AddRendObj(bodyObj);
 
 		var worm = wormObj.GetComponentInChildren<WormEffect>();
 		if (worm)
-			worm.SetMaterial(sharedMaterial);
+			worm.SetMaterialManager(gummyMaterialManager);
+
+		gummyMaterialManager.AssignMaterials();
 	}
 
 	protected override void OnButtonPressed()
@@ -243,68 +237,24 @@ public class GummyBear : PlayerController
 
 	private IEnumerator HammerRemoveRoutine()
 	{
-		hammerMat.SetColor("_EmissionColor", Color.black);
-
-		bool prevWasBlack = true;
-		var duration = hammerTime;
-		while (duration > 0)
-		{
-			yield return new WaitForSeconds(flickerRate);
-
-			duration -= flickerRate;
-			if (!HasHammer)
-				break;
-
-			if (duration < flickerStartTime)
-			{
-				if (prevWasBlack)
-				{
-					hammerMat.SetColor("_EmissionColor", Color.white);
-					prevWasBlack = false;
-				}
-				else
-				{
-					hammerMat.SetColor("_EmissionColor", Color.black);
-					prevWasBlack = true;
-				}
-			}
-		}
-
-		hammerMat.SetColor("_EmissionColor", Color.black);
+		var firstHalf = hammerTime - flickerStartTime;
+		var secondHalf = flickerStartTime;
+		yield return new WaitForSeconds(firstHalf);
+		hammerMaterialManager.StartFlicker(secondHalf);
+		yield return new WaitForSeconds(secondHalf);
+		hammerMaterialManager.StopFlicker();
 		hammerCoroutine = null;
 	}
 
 	private IEnumerator BigPowerDownRoutine()
 	{
-		sharedMaterial.SetColor("_EmissionColor", Color.black);
-
-		bool prevWasBlack = true;
-		var duration = bigTime;
-		while (duration > 0)
-		{
-			yield return new WaitForSeconds(flickerRate);
-
-			duration -= flickerRate;
-			if (!IsBig)
-				break;
-
-			if (duration < flickerStartTime)
-			{
-				if (prevWasBlack)
-				{
-					sharedMaterial.SetColor("_EmissionColor", Color.Lerp(Color.black, Color.white, .75f));
-					prevWasBlack = false;
-				}
-				else
-				{
-					sharedMaterial.SetColor("_EmissionColor", Color.black);
-					prevWasBlack = true;
-				}
-			}
-		}
-
-		sharedMaterial.SetColor("_EmissionColor", Color.black);
+		var firstHalf = bigTime - flickerStartTime;
+		var secondHalf = flickerStartTime;
+		yield return new WaitForSeconds(firstHalf);
+		gummyMaterialManager.StartFlicker(secondHalf);
+		yield return new WaitForSeconds(secondHalf);
 		health.ModifyHealth(-1);
+		gummyMaterialManager.StopFlicker();
 		bigCoroutine = null;
 	}
 }
