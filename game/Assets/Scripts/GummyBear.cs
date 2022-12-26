@@ -143,6 +143,8 @@ public class GummyBear : PlayerController
 
 		TryAssignMaterials();
 
+    gameObject.layer = LayerMask.NameToLayer(health.hitPoints == 0 ? "Gummy Worm" : "Gummy Bear");
+
 		Vector3 targetScale;
 		if (health.hitPoints <= 1)
 		{

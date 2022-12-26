@@ -99,7 +99,7 @@ MonoBehaviour:
   ignore: {fileID: 9143724783748341855}
   layerMask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 448
   radius: 2
   force: 30
   minMultipler: 0.4

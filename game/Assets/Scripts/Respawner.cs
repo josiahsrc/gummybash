@@ -14,5 +14,9 @@ public class Respawner : MonoBehaviour
 		health.StartInvincibility();
 		other.gameObject.transform.position = pos;
 		other.gameObject.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);
+
+		var rb = other.GetComponent<Rigidbody>();
+		if (rb)
+			rb.velocity = Vector3.zero;
 	}
 }

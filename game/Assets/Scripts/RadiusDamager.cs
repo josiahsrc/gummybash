@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RadiusDamager : MonoBehaviour
 {
 	public int damage = 1;
 	public float radius = 1;
 	public LayerMask layerMask;
+	public UnityEvent onFire = null;
 
   private float GetScaledRadius()
   {
@@ -23,6 +25,7 @@ public class RadiusDamager : MonoBehaviour
 				continue;
 			targetable.ModifyHealth(-damage);
 		}
+		onFire?.Invoke();
 	}
 
 	void OnDrawGizmosSelected()

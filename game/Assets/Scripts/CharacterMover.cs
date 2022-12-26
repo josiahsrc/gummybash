@@ -19,6 +19,7 @@ public class CharacterMover : MonoBehaviour
 	public bool useControlledVelocity = false;
 	public bool randomJoystick = false;
 	public float randomRate = 5f;
+	public float randomControler = 0.3f;
 
 	public float angularSmoothing = 15f;
 
@@ -75,7 +76,7 @@ public class CharacterMover : MonoBehaviour
 			var dirY = Mathf.PerlinNoise(0f, Time.time * randomRate);
 			dirX = Mathf.Lerp(-1f, 1f, dirX);
 			dirY = Mathf.Lerp(-1f, 1f, dirY);
-			joystick = ((new Vector3(dirX + 0.05f, 0, dirY + 0.05f) + joystick) / 2).normalized;
+			joystick = (new Vector3(dirX + 0.05f, 0, dirY + 0.05f) + joystick * randomControler).normalized;
 		}
 		smoothJoystick = Vector3.Lerp(smoothJoystick, joystick, Time.deltaTime * smoothJoystickRate);
 
