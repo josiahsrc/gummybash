@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:controller/bloc/core/core_cubit.dart';
+import 'package:controller/model/model.dart';
 import 'package:controller/utility/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +37,12 @@ class PlayCubit extends Cubit<PlayState> {
           ? '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}'
           : '0:00';
 
-      emit(this.state.copyWith(timeRemaining: prettyTimeRemaining));
+      emit(this.state.copyWith(
+            timeRemaining: prettyTimeRemaining,
+            color: state.user?.color,
+            type: state.user?.type ?? UserType.none,
+            winner: state.gameState.winner,
+          ));
     });
 
     _timer = Timer.periodic(const Duration(milliseconds: 40), (_) {

@@ -1,3 +1,4 @@
+import 'package:controller/model/model.dart';
 import 'package:controller/page/play/bloc/play_cubit.dart';
 import 'package:controller/widget/joystick.dart';
 import 'package:flutter/material.dart';
@@ -59,32 +60,73 @@ class PlayInner extends StatelessWidget {
       ],
     );
 
+    Widget main;
+    if (playCubit.state.winner != UserType.none) {
+      final msg = playCubit.state.winner == UserType.gingerBreadHouse
+          ? 'House\nWins!'
+          : 'Bears\nWin!';
+      main = Center(
+        child: Text(
+          msg,
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      );
+    } else {
+      Widget image;
+      if (playCubit.state.type == UserType.gingerBreadHouse) {
+        image = Image.asset(
+          'assets/house.png',
+          width: MediaQuery.of(context).size.width * 0.8,
+        );
+      } else if (playCubit.state.type == UserType.gummyBear) {
+        image = Image.asset(
+          'assets/bear.png',
+          width: MediaQuery.of(context).size.width * 0.8,
+        );
+
+        // apply the color to the image
+        image = ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            playCubit.state.color?? Colors.white,
+            BlendMode.srcATop,
+          ),
+          child: image,
+        );
+      } else {
+        image = Container();
+      }
+
+      main = Center(child: image);
+    }
+
+    final content = Column(
+      children: [
+        SizedBox(
+          height: 124,
+          child: Center(
+            child: Text(
+              playCubit.state.timeRemaining ?? '',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: main,
+        ),
+        Divider(
+          thickness: 5,
+        ),
+        Expanded(
+          flex: 2,
+          child: controls,
+        ),
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 124,
-              child: Center(
-                child: Text(
-                  playCubit.state.timeRemaining ?? '',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(),
-            ),
-            Divider(
-              thickness: 5,
-            ),
-            Expanded(
-              flex: 2,
-              child: controls,
-            ),
-          ],
-        ),
+        child: content,
       ),
     );
   }

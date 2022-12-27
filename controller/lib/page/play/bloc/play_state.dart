@@ -6,5 +6,9 @@ part of 'play_cubit.dart';
 class PlayState with _$PlayState {
   const factory PlayState({
     String? timeRemaining,
+    String? winnerText,
+    Color? color,
+    @Default(UserType.none) UserType type,
+    @Default(UserType.none) UserType winner,
   }) = _PlayState;
 }

@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")/../controller"
 
-PORT=${1:-8200}
+PORT=${1:-8202}
 
 fvm flutter clean
 fvm flutter build web

@@ -25,7 +25,7 @@ function cloneGameState(state: GameState): GameState {
 
 const PORT = 8080;
 const KICK_LATENCY = 1000 * 5;
-const GAME_DURATION = 1000 * 60;
+const GAME_DURATION = 1000 * 60 * 3;
 const CREDITS_DURATION = 1000 * 8;
 const SYNC_INTERVAL = 5;
 

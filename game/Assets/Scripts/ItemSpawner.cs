@@ -39,9 +39,6 @@ public class ItemSpawner : MonoBehaviour
 	{
 		while(true)
 		{
-			var delay = Random.Range(minSpawnInterval, maxSpawnInterval);
-			yield return new WaitForSeconds(delay);
-
 			SyncAliveObjs();
 			if (aliveObjs.Count >= maxAlive)
 				continue;
@@ -51,6 +48,9 @@ public class ItemSpawner : MonoBehaviour
 			point.y += yOffset;
 			obj.transform.position = point;
 			aliveObjs.Add(obj);
+
+			var delay = Random.Range(minSpawnInterval, maxSpawnInterval);
+			yield return new WaitForSeconds(delay);
 		}
 	}
 }
