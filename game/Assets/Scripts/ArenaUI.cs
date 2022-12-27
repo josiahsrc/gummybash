@@ -46,8 +46,7 @@ public class ArenaUI : MonoBehaviour
 		if (winner != UserType.none)
 		{
 			winnerText.enabled = true;
-			var value = winner == UserType.gummyBear ? "Bears" : "House";
-			winnerText.text = $"{value}\nWins!";
+			winnerText.text = winner == UserType.gummyBear ? "Bears\nWin!" : "House\nWins!";
 		}
 		else
 		{

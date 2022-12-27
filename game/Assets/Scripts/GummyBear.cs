@@ -131,7 +131,7 @@ public class GummyBear : PlayerController
 
 		if (win)
 		{
-			Debug.Log("GINGER BREAD HOUSE WINS");
+			Server.Instance.SendWinnerRequest(UserType.gingerBreadHouse);
 		}
 	}
 

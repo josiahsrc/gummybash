@@ -144,6 +144,10 @@ wss.on('request', function (request) {
           console.error('Received winner before game started');
           return;
         }
+        if (state.winner !== UserType.none) {
+          console.error('Winner already set');
+          return;
+        }
         const time = new Date().getTime();
         state.winner = req.winner;
         state.endTimestamp = new Date(time).toISOString();

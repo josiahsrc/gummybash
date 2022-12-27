@@ -66,7 +66,7 @@ public class GingerBreadHouse : PlayerController
 
 	private void OnDie()
 	{
-		print("WINNER IS BEARS!!!!");
+		Server.Instance.SendWinnerRequest(UserType.gummyBear);
 	}
 
 	protected override void Update()
