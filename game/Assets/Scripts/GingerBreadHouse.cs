@@ -13,10 +13,12 @@ public class GingerBreadHouse : PlayerController
 	public TriggerDamager dashDamager = null;
 	public Transform buttHole = null;
 	public float poopForce = 5f;
+	public int healthPerEat = 1;
 
 	private float dashTime = 0f;
 	private Coroutine dashCoroutine = null;
 	private Stack<GameObject> poopStack = new Stack<GameObject>();
+	public GingerBreadHouseInfo info = null;
 
 	private void OnEnable()
 	{
@@ -24,6 +26,9 @@ public class GingerBreadHouse : PlayerController
 		health.onDie.AddListener(OnDie);
 		dashDamagerCol.enabled = false;
 		dashDamager.onDamage.AddListener(OnEatSomething);
+
+		info.health = health.hitPoints;
+		info.maxHealth = health.maxHealth;
 	}
 
 	private void OnDisable()
@@ -35,7 +40,7 @@ public class GingerBreadHouse : PlayerController
 
 	private void OnHealthChange(int prev, int curr)
 	{
-
+		info.health = curr;
 	}
 
 	private void StartDash()
@@ -83,6 +88,7 @@ public class GingerBreadHouse : PlayerController
 	{
 		target.SetActive(false);
 		poopStack.Push(target);
+		health.ModifyHealth(healthPerEat);
 	}
 
 	public void PoopStack()
@@ -101,5 +107,16 @@ public class GingerBreadHouse : PlayerController
 		var mover = res.GetComponent<CharacterMover>();
 		if (mover)
 			mover.BreakControlsTemporarily();
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		var isAlive = health.hitPoints > 0;
+		var healthPickUp = other.GetComponent<HealthPickUp>();
+		if (healthPickUp && isAlive)
+		{
+			health.ModifyHealth(healthPickUp.modifier);
+			Destroy(healthPickUp.gameObject);
+		}
 	}
 }

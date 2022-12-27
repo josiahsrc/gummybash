@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UserType {
-  none,
-  gummyBear,
-  gingerBreadHouse,
+public enum UserType
+{
+	none,
+	gummyBear,
+	gingerBreadHouse,
 }
 
 [System.Serializable]
@@ -18,7 +19,7 @@ public class User
 	public float joystickY;
 	public int buttonPresses;
 	public string color;
-  public string type;
+	public string type;
 }
 
 [System.Serializable]
@@ -30,6 +31,33 @@ public class GameState
 	public string endTimestamp;
 	public string lobbyTimestamp;
 	public string winner;
+
+	public bool IsInLobby
+	{
+		get
+		{
+			if (lobbyTimestamp == null)
+				return true;
+
+			var now = System.DateTime.Now;
+			var lobbyTime = System.DateTime.Parse(lobbyTimestamp);
+			return now > lobbyTime;
+		}
+	}
+
+	public bool IsGameInProgress
+	{
+		get
+		{
+			if (startTimestamp == null || endTimestamp == null)
+				return false;
+
+			var now = System.DateTime.Now;
+			var startTime = System.DateTime.Parse(startTimestamp);
+			var endTime = System.DateTime.Parse(endTimestamp);
+			return now > startTime && now < endTime;
+		}
+	}
 }
 
 [System.Serializable]
@@ -54,7 +82,7 @@ public class UpdateUserRequest
 public class UpdateGameStateRequest
 {
 	public string runtimeType = "updateGameState";
-  public string winner;
+	public string winner;
 	public bool start;
 	public bool lobby;
 }

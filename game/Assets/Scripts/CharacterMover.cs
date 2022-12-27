@@ -55,13 +55,13 @@ public class CharacterMover : MonoBehaviour
 		var joystickX = user.joystickX;
 		var joystickY = user.joystickY;
 		var joystick = new Vector3(joystickX, 0, joystickY);
-		return joystick;
+		return joystick.normalized;
 	}
 
 	private Vector3 ComputerMovement()
 	{
 		var joystick = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-		return joystick;
+		return joystick.normalized;
 	}
 
 	public void BreakControlsTemporarily()
@@ -74,7 +74,6 @@ public class CharacterMover : MonoBehaviour
 		_controlTime -= Time.deltaTime;
 
 		var joystick = enableComputerMovement ? ComputerMovement() : GetMovementFromPlayer();
-		joystick = joystick.normalized;
 		if (joystick.sqrMagnitude > 0.001f)
 			_lastDir = joystick.normalized;
 		if (randomJoystick)

@@ -48,21 +48,21 @@ public static class Utility
 			throw new System.ArgumentException("Invalid hex code: " + code);
 		}
 
-		byte r = byte.Parse(code.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-		byte g = byte.Parse(code.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-		byte b = byte.Parse(code.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-		byte a = byte.Parse(code.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+		byte a = byte.Parse(code.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+		byte r = byte.Parse(code.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+		byte g = byte.Parse(code.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+		byte b = byte.Parse(code.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
 
 		return new Color32(r, g, b, a);
 	}
 
 	public static string ColorToHex(Color color)
 	{
+		byte a = (byte)(color.a * 255);
 		byte r = (byte)(color.r * 255);
 		byte g = (byte)(color.g * 255);
 		byte b = (byte)(color.b * 255);
-		byte a = (byte)(color.a * 255);
 
-		return $"{r:X2}{g:X2}{b:X2}{a:X2}";
+		return $"{a:X2}{r:X2}{g:X2}{b:X2}";
 	}
 }

@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!Server.Instance)
+		if (!Server.Instance || Server.Instance.state?.users == null)
 			return;
 
 		var userIds = Server.Instance.state.users.Select(x => x.id).ToHashSet();
@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
 				}
 
 				var obj = Instantiate(prefab);
+				obj.transform.position = MapInfo.Instance.RandomPositionOnNavMesh();
 				var player = obj.GetComponent<Player>();
 				player.userId = userId;
 				_players[userId] = player;

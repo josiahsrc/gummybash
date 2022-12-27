@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
 
-public class Server : Singleton<Server>
+public class Server : AutoSingleton<Server>
 {
 	private static readonly string url = "ws://10.0.0.12:8080";
 
