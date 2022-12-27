@@ -83,8 +83,8 @@ public class MaterialManager : MonoBehaviour
 		if (_flickerRoutine != null)
 		{
 			StopCoroutine(_flickerRoutine);
-			ResetFlicker();
 		}
+		ResetFlicker();
 		_flickerRoutine = null;
 	}
 
