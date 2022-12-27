@@ -14,6 +14,9 @@ public class GingerBreadHouse : PlayerController
 	public Transform buttHole = null;
 	public float poopForce = 5f;
 	public int healthPerEat = 1;
+  public UnityEngine.Events.UnityEvent onDash;
+  public UnityEngine.Events.UnityEvent onPoop;
+  public UnityEngine.Events.UnityEvent onCollect;
 
 	private float dashTime = 0f;
 	private Coroutine dashCoroutine = null;
@@ -58,6 +61,7 @@ public class GingerBreadHouse : PlayerController
 
 		animator.SetBool("Dash", true);
 		dashDamagerCol.enabled = true;
+    onDash?.Invoke();
 		yield return new WaitForSeconds(dashDuration);
 		animator.SetBool("Dash", false);
 
@@ -96,6 +100,7 @@ public class GingerBreadHouse : PlayerController
 		if (!poopStack.TryPop(out var res))
 			return;
 
+    onPoop?.Invoke();
 		res.SetActive(true);
 		res.transform.position = buttHole.transform.position;
 		res.transform.rotation = buttHole.transform.rotation;
@@ -117,6 +122,7 @@ public class GingerBreadHouse : PlayerController
 		{
 			health.ModifyHealth(healthPickUp.modifier);
 			Destroy(healthPickUp.gameObject);
+			onCollect?.Invoke();
 		}
 	}
 }

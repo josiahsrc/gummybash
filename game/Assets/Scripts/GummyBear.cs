@@ -32,6 +32,8 @@ public class GummyBear : PlayerController
 	public GameObject bodyObj = null;
 	public GameObject wormObj = null;
 
+  public UnityEvent onCollect;
+
 	public static HashSet<GummyBear> bears = new();
 
 	private Color? lastColor;
@@ -227,6 +229,7 @@ public class GummyBear : PlayerController
 			Destroy(healthPickUp.gameObject);
 			if (health.hitPoints == 2)
 				StartBig();
+			onCollect?.Invoke();
 		}
 
 		var hammerPickUp = other.GetComponent<HammerPickUp>();
@@ -234,6 +237,7 @@ public class GummyBear : PlayerController
 		{
 			StartHammer();
 			Destroy(hammerPickUp.gameObject);
+			onCollect?.Invoke();
 		}
 	}
 
