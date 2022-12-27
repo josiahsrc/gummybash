@@ -2,6 +2,7 @@ import { server as WSServer } from "websocket";
 import * as http from "http";
 import { userHexColors } from "./color";
 import { GameState, GameStateResponse, JoinGameRequest, UpdateGameStateRequest, UpdateUserRequest, User, UserType } from "./model";
+import * as readlineSync from "readline-sync";
 
 function cloneGameState(state: GameState): GameState {
   return {
@@ -20,6 +21,7 @@ function cloneGameState(state: GameState): GameState {
     endTimestamp: state.endTimestamp,
     lobbyTimestamp: state.lobbyTimestamp,
     winner: state.winner,
+    preStart: state.preStart,
   };
 }
 
@@ -41,6 +43,7 @@ const state: GameState = {
   updatedAt: new Date().toISOString(),
   lobbyTimestamp: new Date().toISOString(),
   winner: UserType.none,
+  preStart: false,
 };
 let lastState = cloneGameState(state);
 
@@ -122,6 +125,12 @@ wss.on('request', function (request) {
         state.endTimestamp = new Date(time + GAME_DURATION).toISOString();
         state.lobbyTimestamp = new Date(time + GAME_DURATION + CREDITS_DURATION).toISOString();
         state.winner = UserType.none;
+        state.preStart = false;
+      } else if (req.preStart) {
+        state.startTimestamp = undefined;
+        state.endTimestamp = undefined;
+        state.winner = UserType.none;
+        state.preStart = true;
 
         // Assign user types
         const userIds = state.users.map(user => user.id);
@@ -139,6 +148,8 @@ wss.on('request', function (request) {
         state.endTimestamp = undefined;
         state.lobbyTimestamp = new Date().toISOString();
         state.winner = UserType.none;
+        state.preStart = false;
+        clearUserTypes();
       } else if (req.winner) {
         if (!state.startTimestamp) {
           console.error('Received winner before game started');
@@ -152,12 +163,21 @@ wss.on('request', function (request) {
         state.winner = req.winner;
         state.endTimestamp = new Date(time).toISOString();
         state.lobbyTimestamp = new Date(time + CREDITS_DURATION).toISOString();
+        state.preStart = false;
       }
     } else {
       console.error('Received unknown message type', type);
     }
   });
 });
+
+function resetGame() {
+  state.startTimestamp = undefined;
+  state.endTimestamp = undefined;
+  state.preStart = false;
+  state.winner = UserType.none;
+  clearUserTypes();
+}
 
 // Sync game state
 setInterval(() => {
@@ -170,13 +190,10 @@ setInterval(() => {
   });
   state.updatedAt = new Date().toISOString();
 
-  // End game if time is up
+  // End game if time is up or no users are left
   const lobbyTimeDiff = now - new Date(state.lobbyTimestamp).getTime();
-  if (lobbyTimeDiff > 0) {
-    state.startTimestamp = undefined;
-    state.endTimestamp = undefined;
-    state.winner = UserType.none;
-    clearUserTypes();
+  if ((lobbyTimeDiff > 0 && !state.preStart) || state.users.length === 0) {
+    resetGame();
   }
 
   // Send game state to all clients
@@ -199,3 +216,11 @@ setInterval(() => {
 }, SYNC_INTERVAL);
 
 console.log(`Server started on port ${PORT}`);
+
+// while (true) {
+//   const input = readlineSync.question('Enter command: ');
+//   if (input === 'r') {
+//     console.log('Resetting game');
+//     resetGame();
+//   }
+// }

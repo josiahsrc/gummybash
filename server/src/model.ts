@@ -22,6 +22,7 @@ export interface GameState {
   endTimestamp?: string;
   lobbyTimestamp: string;
   winner: UserType;
+  preStart: boolean;
 }
 
 export interface JoinGameRequest {
@@ -41,6 +42,7 @@ export interface UpdateUserRequest {
 export interface UpdateGameStateRequest {
   runtimeType: 'updateGameState';
   winner?: UserType;
+  preStart?: boolean;
   start?: boolean;
   lobby?: boolean;
 }

@@ -78,6 +78,22 @@ class CoreCubit extends Cubit<CoreState> {
         start: true,
         lobby: false,
         winner: null,
+        preStart: false,
+      ),
+    );
+  }
+
+  Future<void> preStartGame() async {
+    if (!_isReady()) {
+      return;
+    }
+
+    return _addMessage(
+      Requests.updateGameState(
+        start: false,
+        lobby: false,
+        winner: null,
+        preStart: true,
       ),
     );
   }
@@ -92,6 +108,7 @@ class CoreCubit extends Cubit<CoreState> {
         start: false,
         lobby: true,
         winner: null,
+        preStart: false,
       ),
     );
   }

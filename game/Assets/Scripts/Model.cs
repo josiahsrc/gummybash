@@ -31,6 +31,7 @@ public class GameState
 	public string endTimestamp;
 	public string lobbyTimestamp;
 	public string winner;
+  public bool preStart;
 
 	public bool IsInLobby
 	{
@@ -85,6 +86,7 @@ public class UpdateGameStateRequest
 	public string winner;
 	public bool start;
 	public bool lobby;
+  public bool preStart;
 }
 
 [System.Serializable]

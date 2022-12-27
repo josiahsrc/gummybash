@@ -40,9 +40,9 @@ class LobbyInner extends StatelessWidget {
       body: ButtonFormWrapper(
         primaryButton: ElevatedButton(
           onPressed: () {
-            cubit.startGame();
+            cubit.preStartGame();
           },
-          child: const Text('Start Game!'),
+          child: const Text('Play'),
         ),
         child: content,
       ),

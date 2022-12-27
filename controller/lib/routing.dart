@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:controller/page/lobby/lobby_page.dart';
+import 'package:controller/page/pre_start/pre_start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:controller/bloc/core/core_cubit.dart';
 import 'package:controller/page/join/join_page.dart';
@@ -28,6 +29,12 @@ part 'routing.gr.dart';
       transitionsBuilder: TransitionsBuilders.fadeIn,
       guards: [CoreStateGuard],
     ),
+    CustomRoute(
+      path: '/pre-start',
+      page: PreStartPage,
+      transitionsBuilder: TransitionsBuilders.fadeIn,
+      guards: [CoreStateGuard],
+    ),
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -41,7 +48,11 @@ PageRouteInfo getRouteForCoreState(CoreState state) {
     return JoinRoute();
   } else if (state is ReadyState) {
     if (state.isInLobby) {
-      return LobbyRoute();
+      if (state.gameState.preStart) {
+        return PreStartRoute();
+      } else {
+        return LobbyRoute();
+      }
     } else {
       return PlayRoute();
     }

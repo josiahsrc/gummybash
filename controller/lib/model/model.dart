@@ -50,6 +50,7 @@ class GameState with _$GameState {
     )
         required DateTime? endTimestamp,
     required DateTime lobbyTimestamp,
+    required bool preStart,
     @Default(UserType.none)
         UserType winner,
   }) = _GameState;
@@ -76,6 +77,7 @@ class Requests with _$Requests {
     required UserType? winner,
     required bool? start,
     required bool? lobby,
+    required bool? preStart,
   }) = UpdateGameStateRequest;
 
   factory Requests.fromJson(Map<String, dynamic> json) =>
