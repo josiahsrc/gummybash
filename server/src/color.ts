@@ -6,7 +6,6 @@ export const userHexColors = [
   /* green */ '#FF00FF00',
   /* blue */ '#FF0000FF',
   /* indigo */ '#FF4B0082',
-  /* white */ '#FFFFFFFF',
   /* purple */ '#FF800080',
   /* pink */ '#FFFFC0CB',
   /* brown */ '#FFA52A2A',

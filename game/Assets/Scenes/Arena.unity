@@ -849,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &274028136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7317,7 +7317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 4225118588458024976, guid: e4e2aa81957b54aada3f2266bb412339, type: 3}
   maxAlive: 2
-  minSpawnInterval: 5
+  minSpawnInterval: 2
   maxSpawnInterval: 10
   yOffset: 1
 --- !u!114 &1577969358
@@ -7334,7 +7334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 2639069324410909253, guid: 0a366d4cf654c479cac746332b6d1ca5, type: 3}
   maxAlive: 2
-  minSpawnInterval: 5
+  minSpawnInterval: 2
   maxSpawnInterval: 10
   yOffset: 0.2
 --- !u!4 &1577969359

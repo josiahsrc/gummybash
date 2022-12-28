@@ -172,7 +172,7 @@ MonoBehaviour:
   body: {fileID: 910915425285278909}
   smoothJoystickRate: 20
   col: {fileID: 651580539}
-  speed: 5
+  speed: 3.5
   movementSmoothing: 0.1
   recoveryTime: 1
   force: 40
@@ -249,7 +249,7 @@ MonoBehaviour:
   mover: {fileID: 910915425285278906}
   health: {fileID: 8232916561685236739}
   animator: {fileID: 2534299911871806715}
-  dashForce: 30
+  dashForce: 20
   dashCooldown: 2
   dashDuration: 0.3
   dashDamagerCol: {fileID: 259766538}
