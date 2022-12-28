@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyPartPrefab: {fileID: 452127828361647276, guid: 45d6036fb670045749f571b3fb07af9a,
     type: 3}
-  bodySpeed: 19.48
-  gap: 24
-  bodyParts: 10
+  bodySpeed: 48
+  gap: 5
+  bodyParts: 12
   maxPositions: 300
   materialManager: {fileID: 0}
 --- !u!1 &1380318808
@@ -431,7 +431,7 @@ MonoBehaviour:
   speed: 6
   movementSmoothing: 0.1
   recoveryTime: 1
-  force: 25
+  force: 40.7
   useControlledVelocity: 0
   randomJoystick: 0
   randomRate: 1.5

@@ -7,8 +7,8 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GummyBear@Big
-  dynamicFriction: 0
-  staticFriction: 0
+  dynamicFriction: 1.26
+  staticFriction: 0.58
   bounciness: 0
   frictionCombine: 3
   bounceCombine: 0
