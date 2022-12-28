@@ -84,7 +84,7 @@ public class WormEffect : MonoBehaviour
 			materialManager.RemoveRendObj(obj);
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		var pos = transform.position;
 		_positions.Insert(0, pos);
@@ -99,7 +99,7 @@ public class WormEffect : MonoBehaviour
 		{
 			var point = _positions[Mathf.Min(i * gap, _positions.Count - 1)];
 			var dir = point - prevPositions[i];
-			_bodyParts[i].transform.position += dir * Time.deltaTime * bodySpeed;
+			_bodyParts[i].transform.position += dir * Time.fixedDeltaTime * bodySpeed;
 			_bodyParts[i].transform.rotation = dir == Vector3.zero ?
 				Quaternion.identity : Quaternion.LookRotation(dir);
 		}

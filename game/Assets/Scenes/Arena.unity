@@ -4216,7 +4216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 766178360}
   m_Layer: 0
-  m_Name: Map
+  m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4836,7 +4836,7 @@ GameObject:
   - component: {fileID: 799963403}
   - component: {fileID: 799963402}
   m_Layer: 2
-  m_Name: Info
+  m_Name: Map Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4868,7 +4868,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 30.231115, y: 8.6154785, z: 22.451319}
+  m_Size: {x: 23.124699, y: 8.6154785, z: 16.78786}
   m_Center: {x: 2.2201986, y: 9.634401, z: -0.66606045}
 --- !u!114 &799963403
 MonoBehaviour:
@@ -7134,7 +7134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1511447258}
   m_Layer: 0
-  m_Name: Map
+  m_Name: Map Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

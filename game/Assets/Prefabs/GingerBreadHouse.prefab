@@ -223,8 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01145735c01b74d699e1df741c851014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 25
-  maxHealth: 25
+  hitPoints: 18
+  maxHealth: 18
   materialManager: {fileID: 226565367}
   invincibilityDuration: 3
   onDie:

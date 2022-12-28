@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyPartPrefab: {fileID: 452127828361647276, guid: 45d6036fb670045749f571b3fb07af9a,
     type: 3}
-  bodySpeed: 48
-  gap: 5
+  bodySpeed: 57.07
+  gap: 3
   bodyParts: 12
   maxPositions: 300
   materialManager: {fileID: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: -1
-  radius: 1.09
+  radius: 2.86
   layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -431,7 +431,7 @@ MonoBehaviour:
   speed: 6
   movementSmoothing: 0.1
   recoveryTime: 1
-  force: 40.7
+  force: 40
   useControlledVelocity: 0
   randomJoystick: 0
   randomRate: 1.5
@@ -511,8 +511,8 @@ MonoBehaviour:
   wormMaterial: {fileID: 13400000, guid: 7f61181074bcf4b76a9628e2bfd31f9e, type: 2}
   normalMaterial: {fileID: 13400000, guid: 2876ea1d873334c57bf9ffc67700551b, type: 2}
   bigMaterial: {fileID: 13400000, guid: 7090c4c7b6f6144b7b2145777370ea16, type: 2}
-  hammerTime: 7
-  bigTime: 10
+  hammerTime: 15
+  bigTime: 25
   flickerStartTime: 2
   bodyObj: {fileID: 1670061932323749486}
   wormObj: {fileID: 143522125}

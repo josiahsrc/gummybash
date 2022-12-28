@@ -12,7 +12,7 @@ public class ResourceAudioPlayer : MonoBehaviour
 	void Awake()
 	{
 		if (playOnAwake)
-			Fire();
+			Play();
 	}
 
 	public void Fire()

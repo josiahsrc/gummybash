@@ -7,7 +7,7 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: IceBerg@Top
-  dynamicFriction: 0.54
+  dynamicFriction: 0.78
   staticFriction: 0.57
   bounciness: 0
   frictionCombine: 0
