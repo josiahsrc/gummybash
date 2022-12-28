@@ -34,7 +34,7 @@ public class ArenaUI : MonoBehaviour
 			timer.text = "00:00";
 		}
 
-		if (houseInfo)
+		if (houseInfo && houseInfo.maxHealth > 0)
 		{
 			var health = houseInfo.health;
 			var maxHealth = houseInfo.maxHealth;

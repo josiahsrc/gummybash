@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b1d0509552e41acbd4ab23a671136e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 3
   radius: 1.09
   layerMask:
     serializedVersion: 2
@@ -505,13 +505,13 @@ MonoBehaviour:
   color: {r: 1, g: 0.687739, b: 0, a: 1}
   bigScaleMultiplier: 2.1
   scaleRate: 30
-  bigDamageMultipler: 1.5
-  bigForceMultiplier: 1.5
+  bigDamageMultipler: 1.75
+  bigForceMultiplier: 1.75
   bigMassMultiplier: 3
   wormMaterial: {fileID: 13400000, guid: 7f61181074bcf4b76a9628e2bfd31f9e, type: 2}
   normalMaterial: {fileID: 13400000, guid: 2876ea1d873334c57bf9ffc67700551b, type: 2}
   bigMaterial: {fileID: 13400000, guid: 7090c4c7b6f6144b7b2145777370ea16, type: 2}
-  hammerTime: 10
+  hammerTime: 7
   bigTime: 10
   flickerStartTime: 2
   bodyObj: {fileID: 1670061932323749486}

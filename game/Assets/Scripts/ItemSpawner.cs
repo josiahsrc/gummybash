@@ -37,11 +37,16 @@ public class ItemSpawner : MonoBehaviour
 
 	private IEnumerator Spin()
 	{
-		while(true)
+		while (true)
 		{
+			var delay = Random.Range(minSpawnInterval, maxSpawnInterval);
+
 			SyncAliveObjs();
 			if (aliveObjs.Count >= maxAlive)
+			{
+				yield return new WaitForSeconds(delay);
 				continue;
+			}
 
 			var point = MapInfo.Instance.RandomPositionOnNavMesh();
 			var obj = Instantiate(prefab);
@@ -49,7 +54,6 @@ public class ItemSpawner : MonoBehaviour
 			obj.transform.position = point;
 			aliveObjs.Add(obj);
 
-			var delay = Random.Range(minSpawnInterval, maxSpawnInterval);
 			yield return new WaitForSeconds(delay);
 		}
 	}
